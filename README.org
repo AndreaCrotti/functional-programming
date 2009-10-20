@@ -1,0 +1,64 @@
+Different strategies of evaluation
+
+* Innermost
+  call by value
+
+* Outermost
+  call by name
+
+** Pros
+   Only evaluate subexpressions needed for overall result
+
+** Cons
+   Sometimes you have to evaluate more than once some of the expressions
+
+
+Haskell uses the so called *lazy evaluation*
+
+Basically outermost evaluation, but keeping memory of *different evaluations*, keeping tracks of duplicates and evaluates them all in parallel.
+
+An example where outermost is better could be
+
+#+BEGIN_SRC haskell
+three :: Int -> Int
+three x = 3
+costly :: Int -> Int
+costly x = longcomputation
+#+END_SRC
+
+and here *three (costly x)* with innermost would take a very long time but the result is always 3.
+
+We can define functions that work on infinite data structures.
+
+
+* Conditional defining equations
+
+#+BEGIN_SRC haskell
+  -- you can use tuples here
+  maxi :: (Int, Int) -> Int
+  maxi (x, y)
+  | x >= y = x
+  | otherwise = y
+#+END_SRC
+
+
+* Currying
+
+#+BEGIN_SRC haskell
+  -- equivalent solution
+  plus :: Int -> Int -> Int
+  plus :: (Int, Int) -> Int
+  plus :: Int -> (Int -> Int) -- takes int and returns another functions
+#+END_SRC
+
+  Application always associates *to the left*
+
+  I can define a higher order function
+  
+#+BEGIN_SRC haskell
+  suc :: Int -> Int
+  suc = plus 1
+#+END_SRC
+
+** Advantages of currying
+   
