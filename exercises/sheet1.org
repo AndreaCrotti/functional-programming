@@ -1,0 +1,100 @@
+SHEET1
+# Trying to solve problems in org-mode + babel
+
+1)
+  - a)
+#+BEGIN_SRC haskell
+  f1 :: Bool -> Int -> Int
+  f1 b n =
+     | b = n / 2
+     | otherwise = n
+  
+  f2 :: (Int -> Int) -> Int -> Bool
+  -- true if applying the function to n is greater than 0
+  f2 fun n = (fun n) > 0
+  
+  f3 :: Int -> [Int] -> [Int]
+  f3 x xs = x : xs
+#+END_SRC
+  
+  - b)
+#+BEGIN_SRC haskell
+  f :: (Int -> Bool) -> (Bool -> Int)
+  g :: (Bool -> Int) -> (Int -> Bool)
+  h x y = f (g (f y)) x
+#+END_SRC
+  The type of h is then 
+  *h :: Bool -> (Int -> Bool) -> Int*
+
+2) 
+   We assume here (by convention) that *x*, *y* are elements and *xs*, *ys* are lists.
+   In general we have that
+
+#+BEGIN_SRC haskell
+  Prelude> :t (:)
+  (:) :: a -> [a] -> [a]
+  Prelude> :t (++)
+  (++) :: [a] -> [a] -> [a]
+#+END_SRC
+  Which in short means that (:) builds lists, while (++) concatenates them
+  
+  - a) Correct, from the definition of operator (:).
+    
+  - b) Incorrect, type mismatch in: ([x] ++ xs) : ys
+    
+  - c) Incorrect, type mismatch in: (x:xs):ys
+    
+  - d) Incorrect, type mismatch in: xs++(ys:zs)
+
+
+3) 
+  - a)
+  #+BEGIN_SRC haskell
+  divisibleByTwo :: Int -> Bool
+  divisibleByTwo x
+  | x < 0 = divisibleByTwo $ abs x -- handling also negative numbers
+  | x == 0 = True
+  | x == 1 = False
+  | otherwise = divisibleByTwo (x - 2)
+  #+END_SRC
+  
+  - b)
+#+BEGIN_SRC haskell
+  divisibleByTwoList :: [Int] -> Bool
+  -- base case, given the short circuiting properties of (||) we never get here if we find an even number
+  divisibleByTwoList [] = False
+  divisibleByTwoList (x : xs) =
+                     (divisibleByTwo x) || (divisibleByTwoList xs)
+#+END_SRC
+
+  - c)
+#+BEGIN_SRC haskell
+  power :: Int -> Int -> Int
+  power x y
+      | y < 0 = undefined
+      | y == 0 = 1
+      | divisibleByTwo y = (power x (div y 2)) * (power x (div y 2))
+      | otherwise = x * (power x (y - 1))
+#+END_SRC
+
+  - d)
+  
+#+BEGIN_SRC haskell
+  powerld :: Int -> Int -> Int
+  powerld x y
+      | y < 0 = undefined
+      | y == 0 = 1
+      | divisibleByTwo y = temp * temp
+      | otherwise = x * (powerld x (y - 1)) 
+      where temp = powerld x (div y 2)
+#+END_SRC
+
+  To evaluate /power(ld) 3 2/ I need to evaluate /power/ 4 times while only 2 times /powerld/.
+
+4) 
+#+BEGIN_SRC haskell
+  (><) :: [a] -> [b] -> [(a,b)]
+  -- right associative and with priority higher than (++)
+  infixr 6 ><
+  xs >< ys = [ (x, y) | x <- xs, y <- ys]
+#+END_SRC

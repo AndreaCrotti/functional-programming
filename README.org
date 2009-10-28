@@ -1,5 +1,6 @@
 Different strategies of evaluation
 
+
 * Innermost
   call by value
 
@@ -31,7 +32,8 @@ and here *three (costly x)* with innermost would take a very long time but the r
 We can define functions that work on infinite data structures.
 
 
-* Conditional defining equations
+* DECLARATIONS
+** Conditional defining equations
 
 #+BEGIN_SRC haskell
   -- you can use tuples here
@@ -42,7 +44,7 @@ We can define functions that work on infinite data structures.
 #+END_SRC
 
 
-* Currying
+** Currying
 
 #+BEGIN_SRC haskell
   -- equivalent solution
@@ -60,11 +62,11 @@ We can define functions that work on infinite data structures.
   suc = plus 1
 #+END_SRC
 
-** Advantages of currying
-   - Apply functions to only one argument
+*** Advantages of currying
+    - Apply functions to only one argument
 
 
-* Pattern matching
+** Pattern matching
 
 The order does matter, the first matching expression will be executed
 
@@ -74,7 +76,7 @@ The order does matter, the first matching expression will be executed
   und False y = False
 #+END_SRC
 
-** Pattern matching for different data structures
+*** Pattern matching for different data structures
 #+BEGIN_SRC haskell
    Bool -> True | False
    [a] -> [] | a : [a]
@@ -87,7 +89,7 @@ The order does matter, the first matching expression will be executed
 #+resname:
 : <interactive>:1:11: parse error on input `='
 
-* Pattern declaration
+** Pattern declaration
   Assign a unique value to every variable in the pattern.
  
 #+BEGIN_SRC haskell
@@ -97,18 +99,29 @@ The order does matter, the first matching expression will be executed
 #+END_SRC
   
 
-* Operators Infix declarations
-  2 + 3 \rightarrow infix symbol
-  (+) \rightarrow prefix symbol
-  
-  Fixity can be shifted between prefix/infix.
+** Operators Infix declarations
+   2 + 3 \rightarrow infix symbol
+   (+) \rightarrow prefix symbol
+   
+   Fixity can be shifted between prefix/infix.
 
-* Association
-  We normally associate to the right, but we can define ourselves where the associativity should go.
-  *infixl* *infixr*
-  *infix*, associates neither to left or right
-  45 `divide` 5 `divide` 3 gives error in this case
-  
-  - *:* associates to the right, 3:4:[] \rightarrow 3:(4:[])
+** Association
+   We normally associate to the right, but we can define ourselves where the associativity should go.
+   *infixl* *infixr*
+   *infix*, associates neither to left or right
+   45 `divide` 5 `divide` 3 gives error in this case
+   
+   - *:* associates to the right, 3:4:[] \rightarrow 3:(4:[])
 
-  - function application associates to the left (square square 3)
+   - function application associates to the left (square square 3)
+
+
+** Priority
+   We can define a number of priority in infix priority (between 0 and 9 (which is default)).
+   *infixl 9 %%*
+   *infixl 8 @@*
+
+
+* Expressions
+  First haskell checks the type and IF is well typed than the expression is evaluated.
+

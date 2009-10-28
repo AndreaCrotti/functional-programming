@@ -1,0 +1,25 @@
+SHEET 2
+
+1) 
+   - (a) [[ a ] ]
+   - (b) type error, we try to build a list which is not homogeneous, like [a, [b]], which is not allowed
+   - (c) Num t => [t], simply creating a list from a number
+   - (d) A tuple can contain arbitary types (while a list can't) so it becomes:
+     ([a], [a1], a2 -> [a2] -> [a2]) -- always a2 because the list created must be homogeneous
+   - (e) Num t => ([a -> [a]], t)
+   - (f) Num t => [t] -> t
+   - (g) Num t => t -> a -> (t, a)
+   - (h) Num t => t -> t -> [t, t]
+   - (i) Num t => [[t -> t] -> t -> t], tries to build a list looking for the most general type possible
+   - (j) Num t => a -> (t -> t) -> [t -> t], same thing, here we force "y" to be a function from Num to Num to make the list homogeneous
+
+
+2) 
+#+BEGIN_SRC haskell
+  -- sumList using only case operator and recursion
+  sumList :: [Int] -> Int
+  sumList (x:xs) =
+        case xs of
+        [] -> 0
+        _ -> x + sumList xs
+#+END_SRC
