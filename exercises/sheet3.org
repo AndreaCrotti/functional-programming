@@ -1,0 +1,11 @@
+#+OPTIONS: todo:nil 
+
+* TODO Sheet3
+  DEADLINE: <2009-11-11 Mer>
+  
+* Exercise 1
+  - (a)
+    
+#+BEGIN_SRC haskell
+  data Polynomials a = Const a | Var a | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+#+END_SRC
