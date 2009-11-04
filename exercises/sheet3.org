@@ -1,11 +1,40 @@
-#+OPTIONS: todo:nil 
+#+SETUPFILE: options.org
 
 * TODO Sheet3
   DEADLINE: <2009-11-11 Mer>
   
 * Exercise 1
-  - (a)
+** (a)
     
 #+BEGIN_SRC haskell
-  data Polynomials a = Const a | Var a | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+    data Polynomials a = Const Int | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
 #+END_SRC
+
+** (b)
+#+BEGIN_SRC haskell
+  instance (Show a) => Show (Polynomials a) where
+      show (Var x) = x
+      show (Const x) = show x
+      show (Prod x y) = "(" ++ show x ++ " * " ++ show y ++ ")"
+      show (Sum x y) = "(" ++ show x ++ " + " ++ show y ++ ")"
+#+END_SRC
+
+** (c)
+#+BEGIN_SRC haskell
+  class PlusTimes a where
+      plus :: a -> a -> a
+      times :: a -> a -> a
+#+END_SRC
+
+** (d)
+#+BEGIN_SRC haskell
+  instance PlusTimes Int where
+      plus x y = x + y
+      times x y = x * y
+#+END_SRC
+
+Check if possible to disambiguate when calling for example
+*plus 2 3*
+
+** (e)
+   
