@@ -37,4 +37,24 @@ Check if possible to disambiguate when calling for example
 *plus 2 3*
 
 ** (e)
+#+BEGIN_SRC haskell
+   data Tropicals = Finite Int | Infinite
+   instance Show Tropicals where
+         show (Finite x) = show x
+         show Infinite = "Infinity"
+#+END_SRC
+   
+** (f)
+#+BEGIN_SRC haskell
+   instance PlusTimes Tropicals where
+         plus (Finite x) Infinite = Finite x
+         plus Infinite (Finite x) = Finite x
+         plus (Finite x) (Finite y) = Finite $ min x y
+
+         times (Finite x) Infinite = Infinite
+         times Infinite (Finite x) = Infinite
+         times (Finite x) (Finite y) = Finite $ x + y
+#+END_SRC
+
+** (g)
    
