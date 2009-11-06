@@ -42,8 +42,10 @@ Check if possible to disambiguate when calling for example
    instance Show Tropicals where
          show (Finite x) = show x
          show Infinite = "Infinity"
-#+END_SRC
    
+   show $ Finite 10
+#+END_SRC
+
 ** (f)
 #+BEGIN_SRC haskell
    instance PlusTimes Tropicals where

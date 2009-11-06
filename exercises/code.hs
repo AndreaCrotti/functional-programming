@@ -48,24 +48,38 @@ instance (Show a) => Show (Polynomials a) where
     show (Sum x y) = "(" ++ show x ++ " + " ++ show y ++ ")"
 
 class PlusTimes a where
-      plus :: a -> a -> a
-      times :: a -> a -> a
-
+    plus :: a -> a -> a
+    times :: a -> a -> a
+               
 instance PlusTimes Int where
-      plus x y = x + y
-      times x y = x * y
+    plus x y = x + y
+    times x y = x * y
 
 data Tropicals = Finite Int | Infinite
 instance Show Tropicals where
-         show (Finite x) = show x
-         show Infinite = "Infinity"
+    show (Finite x) = show x
+    show Infinite = "Infinity"
 
 
 instance PlusTimes Tropicals where
-         plus (Finite x) Infinite = Finite x
-         plus Infinite (Finite x) = Finite x
-         plus (Finite x) (Finite y) = Finite $ min x y
+    plus (Finite x) Infinite = Finite x
+    plus Infinite (Finite x) = Finite x
+    plus (Finite x) (Finite y) = Finite $ min x y
+                                 
+    times (Finite x) Infinite = Infinite
+    times Infinite (Finite x) = Infinite
+    times (Finite x) (Finite y) = Finite $ x + y
 
-         times (Finite x) Infinite = Infinite
-         times Infinite (Finite x) = Infinite
-         times (Finite x) (Finite y) = Finite $ x + y
+-- FIXME: definition not yet correct
+class (Ord a, PlusTimes a) => Interpretable a where
+    interpret :: Polynomials a -> (String -> a) -> a
+    gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+    
+    interpret (Sum x y) _ = plus (interpret x) (interpret y)
+    interpret (Prod x y) _ = times (interpret x) (interpret y)
+    interpret (Var x) mapping = mapping x
+    -- this is for constants and possibly other types
+    interpret x _ = x
+    
+    gt polX polY mapping = (mapping polX) > (mapping polY)
+    
