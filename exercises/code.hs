@@ -1,3 +1,6 @@
+module Testing where
+
+import Char (ord)
 -- code from sheets for easy testing
 
 f :: (Int -> Bool) -> (Bool -> Int)
@@ -70,16 +73,31 @@ instance PlusTimes Tropicals where
     times Infinite (Finite x) = Infinite
     times (Finite x) (Finite y) = Finite $ x + y
 
--- FIXME: definition not yet correct
+
 class (Ord a, PlusTimes a) => Interpretable a where
     interpret :: Polynomials a -> (String -> a) -> a
     gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+    interpret (Var x) m = m x
+    interpret (Sum x y) m = plus (interpret x m) (interpret y m)
+    interpret (Prod x y) m = times (interpret x m) (interpret y m)
+    interpret (Const x) _ = x
+    gt polX polY m = (interpret polX m) > (interpret polY m)
+
+instance Interpretable Int
+ -- where    
+ --    interpret (Var x) m = m x
+ --    interpret (Sum x y) m = plus (interpret x m) (interpret y m)
+ --    interpret (Prod x y) m = times (interpret x m) (interpret y m)
+ --    interpret (Const x) _ = x
+ --    gt polX polY m = (interpret polX m) > (interpret polY m)
     
-    interpret (Sum x y) _ = plus (interpret x) (interpret y)
-    interpret (Prod x y) _ = times (interpret x) (interpret y)
-    interpret (Var x) mapping = mapping x
-    -- this is for constants and possibly other types
-    interpret x _ = x
-    
-    gt polX polY mapping = (mapping polX) > (mapping polY)
-    
+strToNum :: String -> Int
+strToNum s = sum $ map ord s
+
+mappingTest :: String -> Int
+mappingTest x = 
+    case x of
+      "a" -> 10
+      "b" -> 11
+      "c" -> 5
+      otherwise -> 0

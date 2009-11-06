@@ -59,4 +59,18 @@ Check if possible to disambiguate when calling for example
 #+END_SRC
 
 ** (g)
-   
+#+BEGIN_SRC haskell
+  class (Ord a, PlusTimes a) => Interpretable a where
+    interpret :: Polynomials a -> (String -> a) -> a
+    gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+#+END_SRC
+
+** (h)
+#+BEGIN_SRC haskell
+  instance Interpretable Int where    
+      interpret (Var x) m = m x
+      interpret (Sum x y) m = plus (interpret x m) (interpret y m)
+      interpret (Prod x y) m = times (interpret x m) (interpret y m)
+      interpret (Const x) _ = x
+      gt polX polY m = (interpret polX m) > (interpret polY m)
+#+END_SRC
