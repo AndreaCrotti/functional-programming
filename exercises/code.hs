@@ -1,6 +1,7 @@
-module Testing where
+module Sheets where
 
 import Char (ord)
+
 -- code from sheets for easy testing
 
 f :: (Int -> Bool) -> (Bool -> Int)
@@ -42,7 +43,9 @@ sumList (x:xs) =
       [] -> 0
       _ -> x + sumList xs
            
-data Polynomials a = Const Int | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+-- Sheet 3
+
+data Polynomials a = Const a | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
 
 instance (Show a) => Show (Polynomials a) where
     show (Var x) = x
@@ -58,11 +61,10 @@ instance PlusTimes Int where
     plus x y = x + y
     times x y = x * y
 
-data Tropicals = Finite Int | Infinite
+data Tropicals = Finite Int | Infinite deriving (Eq, Ord)
 instance Show Tropicals where
     show (Finite x) = show x
     show Infinite = "Infinity"
-
 
 instance PlusTimes Tropicals where
     plus (Finite x) Infinite = Finite x
@@ -73,7 +75,6 @@ instance PlusTimes Tropicals where
     times Infinite (Finite x) = Infinite
     times (Finite x) (Finite y) = Finite $ x + y
 
-
 class (Ord a, PlusTimes a) => Interpretable a where
     interpret :: Polynomials a -> (String -> a) -> a
     gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
@@ -83,16 +84,12 @@ class (Ord a, PlusTimes a) => Interpretable a where
     interpret (Const x) _ = x
     gt polX polY m = (interpret polX m) > (interpret polY m)
 
+-- nothing else needed, the implementation in the class always works
 instance Interpretable Int
- -- where    
- --    interpret (Var x) m = m x
- --    interpret (Sum x y) m = plus (interpret x m) (interpret y m)
- --    interpret (Prod x y) m = times (interpret x m) (interpret y m)
- --    interpret (Const x) _ = x
- --    gt polX polY m = (interpret polX m) > (interpret polY m)
+instance Interpretable Tropicals
     
 strToNum :: String -> Int
-strToNum s = sum $ map ord s
+strToNum = sum . map ord
 
 mappingTest :: String -> Int
 mappingTest x = 
@@ -101,3 +98,38 @@ mappingTest x =
       "b" -> 11
       "c" -> 5
       otherwise -> 0
+
+data Tree a b = Empty | Node a (Tree b a) (Tree b a) deriving Show
+t0 = (Node 1 (Node True (Node 2 Empty Empty) Empty)(Node False (Node 3 Empty Empty) (Node 4 Empty Empty)))
+
+mapTree :: (a -> c) -> (b -> d) -> Tree a b -> Tree c d
+mapTree _ _ Empty = Empty
+mapTree f1 f2 (Node x y z) =
+    Node (f1 x) (mapTree f2 f1 y) (mapTree f2 f1 z)
+
+foldTree :: (a -> c -> c -> c) -> (b -> c -> c -> c) -> c -> Tree a b -> c
+-- "foldTree fa fb e t" replaces all occurences of
+foldTree _ _ e Empty = e
+foldTree fa fb e (Node x y z) = fa x (foldTree fb fa e y) (foldTree fb fa e z)
+
+
+-- number of Nodes whose values has type A in the first and type B in the second
+-- definining the right function to pass to foldTree
+--countABs :: Tree a b -> (Int, Int)
+-- don't use recursion here!
+-- We must check the leaf type here
+--countABs tree@(Node x y z) = (foldTree (\x y z -> +1) ())
+
+-- countABs tree@(Node x y z) =
+--     let 
+--         f1 = \x y z ->
+--              case y of
+--                Empty -> 0
+--                otherwise -> 1
+--         f2 = \x y z ->
+--              case z of
+--                Empty -> 0
+--                otherwise -> 1
+--     in
+--       (foldTree f1 f2 0 tree, foldTree f2 f1 0 tree)
+                                                     

@@ -125,3 +125,9 @@ The order does matter, the first matching expression will be executed
 * Expressions
   First haskell checks the type and IF is well typed than the expression is evaluated.
 
+
+
+* Programming with lazy evaluation
+  - In general we use leftmost evaluation
+  - some pre-defined arithmetical operators require fully evaluated arguments
+  - with pattern matching arguments are evaluated until one can decide which to pick

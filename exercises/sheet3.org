@@ -7,7 +7,7 @@
 ** (a)
     
 #+BEGIN_SRC haskell
-    data Polynomials a = Const Int | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+    data Polynomials a = Const a | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
 #+END_SRC
 
 ** (b)
@@ -63,14 +63,45 @@ Check if possible to disambiguate when calling for example
   class (Ord a, PlusTimes a) => Interpretable a where
     interpret :: Polynomials a -> (String -> a) -> a
     gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+    interpret (Var x) m = m x
+    interpret (Sum x y) m = plus (interpret x m) (interpret y m)
+    interpret (Prod x y) m = times (interpret x m) (interpret y m)
+    interpret (Const x) _ = x
+    gt polX polY m = (interpret polX m) > (interpret polY m)
 #+END_SRC
 
 ** (h)
 #+BEGIN_SRC haskell
-  instance Interpretable Int where    
-      interpret (Var x) m = m x
-      interpret (Sum x y) m = plus (interpret x m) (interpret y m)
-      interpret (Prod x y) m = times (interpret x m) (interpret y m)
-      interpret (Const x) _ = x
-      gt polX polY m = (interpret polX m) > (interpret polY m)
+   -- nothing else needed, the implementation in the class always works
+   instance Interpretable Int
+   instance Interpretable Tropicals
+#+END_SRC
+
+
+* Exercise 2
+
+** (a)
+
+#+BEGIN_SRC haskell
+  data Tree a b = Empty | Node a (Tree b a) (Tree b a) deriving Show
+  
+  mapTree :: (a -> c) -> (b -> d) -> Tree a b -> Tree c d
+  mapTree _ _ Empty = Empty
+  mapTree f1 f2 (Node x y z) =
+          Node (f1 x) (mapTree f2 f1 y) (mapTree f2 f1 z)
+#+END_SRC
+
+** (b)
+   
+#+BEGIN_SRC haskell
+  foldTree :: (a -> c -> c -> c) -> (b -> c -> c -> c) -> c -> Tree a b -> c
+  -- "foldTree fa fb e t" replaces all occurences of
+  foldTree _ _ e Empty = e
+  foldTree fa fb e (Node x y z) = fa x (foldTree fb fa e y) (foldTree fb fa e z)
+#+END_SRC
+
+** (c)
+
+#+BEGIN_SRC haskell
+   
 #+END_SRC
