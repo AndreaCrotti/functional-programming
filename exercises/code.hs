@@ -70,7 +70,6 @@ instance PlusTimes Tropicals where
     plus (Finite x) Infinite = Finite x
     plus Infinite (Finite x) = Finite x
     plus (Finite x) (Finite y) = Finite $ min x y
-                                 
     times (Finite x) Infinite = Infinite
     times Infinite (Finite x) = Infinite
     times (Finite x) (Finite y) = Finite $ x + y
@@ -111,7 +110,6 @@ foldTree :: (a -> c -> c -> c) -> (b -> c -> c -> c) -> c -> Tree a b -> c
 -- "foldTree fa fb e t" replaces all occurences of
 foldTree _ _ e Empty = e
 foldTree fa fb e (Node x y z) = fa x (foldTree fb fa e y) (foldTree fb fa e z)
-
 
 -- number of Nodes whose values has type A in the first and type B in the second
 -- definining the right function to pass to foldTree
