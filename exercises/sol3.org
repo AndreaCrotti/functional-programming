@@ -5,14 +5,14 @@
   
 * Exercise 1
 ** (a)
-    
+[EUS] It is spelled "Polynomial" not "Polynomials"    
 #+BEGIN_SRC haskell
-    data Polynomials a = Const a | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+    data Polynomial a = Const a | Var String | Sum (Polynomial a) (Polynomial a) | Prod (Polynomial a) (Polynomial a)
 #+END_SRC
 
 ** (b)
 #+BEGIN_SRC haskell
-  instance (Show a) => Show (Polynomials a) where
+  instance (Show a) => Show (Polynomial a) where
       show (Var x) = x
       show (Const x) = show x
       show (Prod x y) = "(" ++ show x ++ " * " ++ show y ++ ")"
@@ -37,44 +37,58 @@ Check if possible to disambiguate when calling for example
 *plus 2 3*
 
 ** (e)
+[EUS] It is spelled "Tropical" not "Tropicals"
+      It is spelled "Infinity" not "Infinity"
 #+BEGIN_SRC haskell
-   data Tropicals = Finite Int | Infinite
-   instance Show Tropicals where
+   data Tropical = Finite Int | Infinity
+   instance Show Tropical where
          show (Finite x) = show x
-         show Infinite = "Infinity"
+         show Infinity = "∞"
    
    show $ Finite 10
 #+END_SRC
 
 ** (f)
+[EUS] For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
+      Let's just use "()" instead of "$" to make it readable for lay men ;-)
 #+BEGIN_SRC haskell
-   instance PlusTimes Tropicals where
-         plus (Finite x) Infinite = Finite x
-         plus Infinite (Finite x) = Finite x
-         plus (Finite x) (Finite y) = Finite $ min x y
+   instance PlusTimes Tropical where
+         plus x Infinity = x
+         plus Infinity x = x
+         plus (Finite x) (Finite y) = Finite (min x y)
 
-         times (Finite x) Infinite = Infinite
-         times Infinite (Finite x) = Infinite
-         times (Finite x) (Finite y) = Finite $ x + y
+         times _ Infinity = Infinity
+         times Infinity _ = Infinity
+         times (Finite x) (Finite y) = Finite (x + y)
 #+END_SRC
 
 ** (g)
+[EUS] (g) asks us to define Tropical an instance of Eq and Ord
+#+BEGIN_SRC haskell
+  instance Eq Tropical where (Finite x) == (Finite y) = x == y
+                             Infinity == Infinity = True
+                             _ == _ = False
+
+  instance Ord Tropical where (Finite x) > (Finite y) = x > y
+                              Infinity > (Finite _) = True
+                              (Finite _) > Infinity = False
+#+END_SRC
+  
+
+** (h)
 #+BEGIN_SRC haskell
   class (Ord a, PlusTimes a) => Interpretable a where
-    interpret :: Polynomials a -> (String -> a) -> a
-    gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+    interpret :: Polynomial a -> (String -> a) -> a
+    gt :: Polynomial a -> Polynomial a -> (String -> a) -> Bool
     interpret (Var x) m = m x
     interpret (Sum x y) m = plus (interpret x m) (interpret y m)
     interpret (Prod x y) m = times (interpret x m) (interpret y m)
     interpret (Const x) _ = x
     gt polX polY m = (interpret polX m) > (interpret polY m)
-#+END_SRC
 
-** (h)
-#+BEGIN_SRC haskell
    -- nothing else needed, the implementation in the class always works
    instance Interpretable Int
-   instance Interpretable Tropicals
+   instance Interpretable Tropical
 #+END_SRC
 
 
@@ -103,5 +117,6 @@ Check if possible to disambiguate when calling for example
 ** (c)
 
 #+BEGIN_SRC haskell
-   
+  countABs :: Tree a b -> (Int, Int)
+  countABs t = (foldTree (\x y z -> 1 + y + z) (\x y z -> 0 + y + z) 0 t, foldTree (\x y z -> 0 + y + z) (\x y z -> 1 + y + z) 0 t)
 #+END_SRC
