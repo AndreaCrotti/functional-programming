@@ -11,7 +11,6 @@ g fun = (\x -> True)
 
 h x y = f (g (f y)) x
 
-
 divisibleByTwo :: Int -> Bool
 divisibleByTwo x
                | x < 0 = divisibleByTwo $ abs x

@@ -5,7 +5,6 @@
   
 * Exercise 1
 ** (a)
-[EUS] It is spelled "Polynomial" not "Polynomials"    
 #+BEGIN_SRC haskell
     data Polynomial a = Const a | Var String | Sum (Polynomial a) (Polynomial a) | Prod (Polynomial a) (Polynomial a)
 #+END_SRC
@@ -37,8 +36,6 @@ Check if possible to disambiguate when calling for example
 *plus 2 3*
 
 ** (e)
-[EUS] It is spelled "Tropical" not "Tropicals"
-      It is spelled "Infinity" not "Infinity"
 #+BEGIN_SRC haskell
    data Tropical = Finite Int | Infinity
    instance Show Tropical where
@@ -49,8 +46,7 @@ Check if possible to disambiguate when calling for example
 #+END_SRC
 
 ** (f)
-[EUS] For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
-      Let's just use "()" instead of "$" to make it readable for lay men ;-)
+   For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
 #+BEGIN_SRC haskell
    instance PlusTimes Tropical where
          plus x Infinity = x
@@ -63,7 +59,6 @@ Check if possible to disambiguate when calling for example
 #+END_SRC
 
 ** (g)
-[EUS] (g) asks us to define Tropical an instance of Eq and Ord
 #+BEGIN_SRC haskell
   instance Eq Tropical where (Finite x) == (Finite y) = x == y
                              Infinity == Infinity = True
@@ -118,5 +113,10 @@ Check if possible to disambiguate when calling for example
 
 #+BEGIN_SRC haskell
   countABs :: Tree a b -> (Int, Int)
-  countABs t = (foldTree (\x y z -> 1 + y + z) (\x y z -> 0 + y + z) 0 t, foldTree (\x y z -> 0 + y + z) (\x y z -> 1 + y + z) 0 t)
+  countABs t = (foldTree
+                (\x y z -> 1 + y + z)
+                (\x y z -> 0 + y + z) 0 t,
+               foldTree
+                (\x y z -> 0 + y + z)
+                (\x y z -> 1 + y + z) 0 t)
 #+END_SRC
