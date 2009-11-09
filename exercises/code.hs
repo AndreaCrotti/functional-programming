@@ -44,9 +44,11 @@ sumList (x:xs) =
            
 -- Sheet 3
 
-data Polynomials a = Const a | Var String | Sum (Polynomials a) (Polynomials a) | Prod (Polynomials a) (Polynomials a)
+data Polynomial a = Const a | Var String | 
+                    Sum (Polynomial a) (Polynomial a) | 
+                    Prod (Polynomial a) (Polynomial a)
 
-instance (Show a) => Show (Polynomials a) where
+instance (Show a) => Show (Polynomial a) where
     show (Var x) = x
     show (Const x) = show x
     show (Prod x y) = "(" ++ show x ++ " * " ++ show y ++ ")"
@@ -60,22 +62,34 @@ instance PlusTimes Int where
     plus x y = x + y
     times x y = x * y
 
-data Tropicals = Finite Int | Infinite deriving (Eq, Ord)
-instance Show Tropicals where
+data Tropical = Finite Int | Infinity
+instance Show Tropical where
     show (Finite x) = show x
-    show Infinite = "Infinity"
+    show Infinity = "Infinity"
 
-instance PlusTimes Tropicals where
-    plus (Finite x) Infinite = Finite x
-    plus Infinite (Finite x) = Finite x
+instance Eq Tropical
+    where
+      (Finite x) == (Finite y) = x == y
+      Infinity == Infinity = True
+      _ == _ = False
+  
+instance Ord Tropical
+    where
+      (Finite x) > (Finite y) = x > y
+      Infinity > (Finite _) = True
+      (Finite _) > Infinity = False
+
+instance PlusTimes Tropical where
+    plus (Finite x) Infinity = Finite x
+    plus Infinity (Finite x) = Finite x
     plus (Finite x) (Finite y) = Finite $ min x y
-    times (Finite x) Infinite = Infinite
-    times Infinite (Finite x) = Infinite
+    times (Finite x) Infinity = Infinity
+    times Infinity (Finite x) = Infinity
     times (Finite x) (Finite y) = Finite $ x + y
 
 class (Ord a, PlusTimes a) => Interpretable a where
-    interpret :: Polynomials a -> (String -> a) -> a
-    gt :: Polynomials a -> Polynomials a -> (String -> a) -> Bool
+    interpret :: Polynomial a -> (String -> a) -> a
+    gt :: Polynomial a -> Polynomial a -> (String -> a) -> Bool
     interpret (Var x) m = m x
     interpret (Sum x y) m = plus (interpret x m) (interpret y m)
     interpret (Prod x y) m = times (interpret x m) (interpret y m)
@@ -84,7 +98,7 @@ class (Ord a, PlusTimes a) => Interpretable a where
 
 -- nothing else needed, the implementation in the class always works
 instance Interpretable Int
-instance Interpretable Tropicals
+instance Interpretable Tropical
     
 strToNum :: String -> Int
 strToNum = sum . map ord

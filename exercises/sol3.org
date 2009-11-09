@@ -6,7 +6,9 @@
 * Exercise 1
 ** (a)
 #+BEGIN_SRC haskell
-    data Polynomial a = Const a | Var String | Sum (Polynomial a) (Polynomial a) | Prod (Polynomial a) (Polynomial a)
+  data Polynomial a = Const a | Var String | 
+                      Sum (Polynomial a) (Polynomial a) | 
+                      Prod (Polynomial a) (Polynomial a)
 #+END_SRC
 
 ** (b)
@@ -32,21 +34,16 @@
       times x y = x * y
 #+END_SRC
 
-Check if possible to disambiguate when calling for example
-*plus 2 3*
-
 ** (e)
 #+BEGIN_SRC haskell
    data Tropical = Finite Int | Infinity
    instance Show Tropical where
          show (Finite x) = show x
          show Infinity = "∞"
-   
-   show $ Finite 10
 #+END_SRC
 
 ** (f)
-   For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
+#   For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
 #+BEGIN_SRC haskell
    instance PlusTimes Tropical where
          plus x Infinity = x
@@ -60,13 +57,17 @@ Check if possible to disambiguate when calling for example
 
 ** (g)
 #+BEGIN_SRC haskell
-  instance Eq Tropical where (Finite x) == (Finite y) = x == y
-                             Infinity == Infinity = True
-                             _ == _ = False
-
-  instance Ord Tropical where (Finite x) > (Finite y) = x > y
-                              Infinity > (Finite _) = True
-                              (Finite _) > Infinity = False
+  instance Eq Tropical
+      where
+        (Finite x) == (Finite y) = x == y
+        Infinity == Infinity = True
+        _ == _ = False
+  
+  instance Ord Tropical
+      where
+        (Finite x) > (Finite y) = x > y
+        Infinity > (Finite _) = True
+        (Finite _) > Infinity = False
 #+END_SRC
   
 
