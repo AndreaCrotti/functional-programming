@@ -97,9 +97,10 @@ mappingTest x =
       "c" -> 5
       otherwise -> 0
 
-data Tree a b = Empty | Node a (Tree b a) (Tree b a) deriving Show
 t0 = (Node 1 (Node True (Node 2 Empty Empty) Empty)(Node False (Node 3 Empty Empty) (Node 4 Empty Empty)))
 
+data Tree a b = Empty | Node a (Tree b a) (Tree b a) deriving Show
+  
 mapTree :: (a -> c) -> (b -> d) -> Tree a b -> Tree c d
 mapTree _ _ Empty = Empty
 mapTree f1 f2 (Node x y z) =
@@ -110,23 +111,6 @@ foldTree :: (a -> c -> c -> c) -> (b -> c -> c -> c) -> c -> Tree a b -> c
 foldTree _ _ e Empty = e
 foldTree fa fb e (Node x y z) = fa x (foldTree fb fa e y) (foldTree fb fa e z)
 
--- number of Nodes whose values has type A in the first and type B in the second
--- definining the right function to pass to foldTree
---countABs :: Tree a b -> (Int, Int)
--- don't use recursion here!
--- We must check the leaf type here
---countABs tree@(Node x y z) = (foldTree (\x y z -> +1) ())
-
--- countABs tree@(Node x y z) =
---     let 
---         f1 = \x y z ->
---              case y of
---                Empty -> 0
---                otherwise -> 1
---         f2 = \x y z ->
---              case z of
---                Empty -> 0
---                otherwise -> 1
---     in
---       (foldTree f1 f2 0 tree, foldTree f2 f1 0 tree)
-                                                     
+countABs :: Tree a b -> (Int, Int)
+countABs t = (foldTree (adder 1) (adder 0) 0 t, foldTree (adder 0) (adder 1) 0 t)
+    where adder w = \_ y z -> w + y + z

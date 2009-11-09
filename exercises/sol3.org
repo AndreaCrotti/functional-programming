@@ -113,10 +113,6 @@ Check if possible to disambiguate when calling for example
 
 #+BEGIN_SRC haskell
   countABs :: Tree a b -> (Int, Int)
-  countABs t = (foldTree
-                (\x y z -> 1 + y + z)
-                (\x y z -> 0 + y + z) 0 t,
-               foldTree
-                (\x y z -> 0 + y + z)
-                (\x y z -> 1 + y + z) 0 t)
+  countABs t = (foldTree (adder 1) (adder 0) 0 t, foldTree (adder 0) (adder 1) 0 t)
+               where adder w = \_ y z -> w + y + z
 #+END_SRC
