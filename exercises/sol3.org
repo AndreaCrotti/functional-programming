@@ -49,7 +49,6 @@
         plus x Infinity = x
         plus Infinity x = x
         plus (Finite x) (Finite y) = Finite (min x y)
-        plus Infinity Infinity = Infinity
   
         times _ Infinity = Infinity
         times Infinity _ = Infinity
