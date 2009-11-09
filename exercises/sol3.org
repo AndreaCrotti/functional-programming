@@ -39,35 +39,34 @@
    data Tropical = Finite Int | Infinity
    instance Show Tropical where
          show (Finite x) = show x
-         show Infinity = "∞"
+         show Infinity = "infinity"
 #+END_SRC
 
 ** (f)
 #   For the case of plus(x, inf) and plus(inf, x), x is defined as x <- T not x <- Z
 #+BEGIN_SRC haskell
-   instance PlusTimes Tropical where
-         plus x Infinity = x
-         plus Infinity x = x
-         plus (Finite x) (Finite y) = Finite (min x y)
-
-         times _ Infinity = Infinity
-         times Infinity _ = Infinity
-         times (Finite x) (Finite y) = Finite (x + y)
+  instance PlusTimes Tropical where
+        plus x Infinity = x
+        plus Infinity x = x
+        plus (Finite x) (Finite y) = Finite (min x y)
+        plus Infinity Infinity = Infinity
+  
+        times _ Infinity = Infinity
+        times Infinity _ = Infinity
+        times (Finite x) (Finite y) = Finite (x + y)
 #+END_SRC
 
 ** (g)
 #+BEGIN_SRC haskell
-  instance Eq Tropical
-      where
-        (Finite x) == (Finite y) = x == y
-        Infinity == Infinity = True
-        _ == _ = False
+  instance Eq Tropical where
+      (Finite x) == (Finite y) = x == y
+      Infinity == Infinity = True
+      _ == _ = False
   
-  instance Ord Tropical
-      where
-        (Finite x) > (Finite y) = x > y
-        Infinity > (Finite _) = True
-        (Finite _) > Infinity = False
+  instance Ord Tropical where
+      (Finite x) > (Finite y) = x > y
+      Infinity > (Finite _) = True
+      (Finite _) > Infinity = False
 #+END_SRC
   
 
