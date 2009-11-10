@@ -1,6 +1,7 @@
 module Sheets where
 
 import Char (ord)
+import List (tails)
 
 -- code from sheets for easy testing
 
@@ -130,7 +131,17 @@ countABs t = (foldTree (adder 1) (adder 0) 0 t, foldTree (adder 0) (adder 1) 0 t
     where adder w = \_ y z -> w + y + z
 
 
--- sieve list of eratosthenes
-sieve :: [Int] -> [Int]
-sieve [] = []
-sieve (x:xs) = x : (sieve $ filter (\n -> mod x n /= 0) xs)
+-- haming list
+--haming = 1 : zipWith (\x -> x : [x * k | k <- [2,3,5]]) haming (tail haming)
+
+mer :: Ord a => [a] -> [a] -> [a]
+mer f@(x:xs) s@(y:ys)
+    | x < y = x : mer xs s
+    | x == y = x : mer xs ys
+    | otherwise = y : mer f ys
+    
+hamming = 1 : mer (map (2*) hamming)
+          (mer (map (3*) hamming)
+               (map (5*) hamming))
+
+fibs = 0 : 1 : zipWith (+) fibs (tail fibs)

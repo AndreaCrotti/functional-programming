@@ -4,13 +4,43 @@ SHEET4
   DEADLINE: <2009-11-18 Mer>
 
 * Exercise 1
-** (a)
+** (a) /splits/ function
+   
+#+begin_src haskell
+
+#+end_src
+
 
 ** (b)
    
 * Exercise 2
-** (a)
+** (a) /factorial/ function
+   
+#+begin_src haskell
+  -- There are many different ways to define the factorial funciton
+  -- I will point one some interesting ones
+  
+  fact1, fact2, fact3, fact4 :: Int -> Int
+  fact1 0 = 1
+  fact1 x = x * (fact1 (x - 1))
+  
+  -- using folding
+  fact2 x = foldl (*) 1 [1..x]
+  
+  -- even easier
+  fact3 x = product [0..x]
+  
+  -- using scan, factorial in a constructive way
+  fact4 x = last $ scanl (*) 1 [1..x]
+#+end_src
 
-** (b)
+** (b) /sumWhile/ function
+   
+#+begin_src haskell
+  -- we take the last value from the list of the sums of
+  -- all the possible initial lists
+  sumWhile :: Int -> [Int] -> Int
+  sumWhile max xs = last $ filter (< max) (map sum (inits xs))
+#+end_src
 
 * Exercise 3
