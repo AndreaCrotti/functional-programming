@@ -2,16 +2,22 @@ SHEET4
 #+SETUPFILE options.org
 * TODO Sheet4
   DEADLINE: <2009-11-18 Mer>
-
+  
 * Exercise 1
-** (a) /splits/ function
+** (a) /coprime/ function
    
 #+begin_src haskell
-
+  coprime :: Int -> [Int]
+  coprime x = [ y | y <- [1..x], gcd x y == 1 ]
 #+end_src
 
-
-** (b)
+   
+** (b) /split/ function
+  
+#+begin_src haskell
+  splits :: [a] -> [([a], [a])]
+  splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
+#+end_src
    
 * Exercise 2
 ** (a) /factorial/ function
@@ -44,3 +50,4 @@ SHEET4
 #+end_src
 
 * Exercise 3
+

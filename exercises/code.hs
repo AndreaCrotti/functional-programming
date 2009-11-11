@@ -145,3 +145,10 @@ hamming = 1 : mer (map (2*) hamming)
                (map (5*) hamming))
 
 fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
+
+
+coprime :: Int -> [Int]
+coprime x = [ y | y <- [1..x], gcd x y == 1 ]
+
+splits :: [a] -> [([a], [a])]
+splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
