@@ -39,7 +39,8 @@ SHEET4
   -- using scan, factorial in a constructive way
   fact4 x = last $ scanl (*) 1 [1..x]
   
-  factorials = [fact4 x | x <- [0..]]
+  factorials = scanl (*) 1 [1..]
+--  factorials = [fact4 x | x <- [0..]]
 #+end_src
 
 ** (b) /sumWhile/ function
