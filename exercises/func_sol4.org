@@ -51,6 +51,9 @@ SHEET4
   
   sumWhile :: Int -> [Int] -> Int
   sumWhile n xs = sumListCond 0 n xs
+  
+  sumWhile2 :: Int -> [Int] -> Int
+  sumWhile2 max xs = last $ takeWhile (< max) (map sum (inits xs))
 #+end_src
 
 * Exercise 3

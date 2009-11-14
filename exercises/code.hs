@@ -1,7 +1,7 @@
 module Sheets where
 
 import Char (ord)
-import List (tails)
+import List (tails, inits)
 
 -- code from sheets for easy testing
 
@@ -146,9 +146,29 @@ hamming = 1 : mer (map (2*) hamming)
 
 fibs = 0 : 1 : zipWith (+) fibs (tail fibs)
 
-
 coprime :: Int -> [Int]
 coprime x = [ y | y <- [1..x], gcd x y == 1 ]
 
 splits :: [a] -> [([a], [a])]
 splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
+
+-- rewrite the binomial product in a constructive way
+-- find a function that given a list returns the list with interleaved the sums
+
+-- addSums :: [[Int]] -> [[Int]]
+-- addSums l = l ++ [ a + b | (a, b) <- getCouples (last l) ]
+--;;--getCouples :: [Int] -> [(Int)]
+getCouples :: [Int] -> [(Int, Int)]
+getCouples l = zip (take ((length l) - 1) l) (drop 1 l)
+
+-- we take the last value from the list of the sums of
+-- all the possible initial lists
+sumWhile :: Int -> [Int] -> Int
+sumWhile max xs = last $ takeWhile (< max) (map sum (inits xs))
+
+-- pascal2 0 = [1,1]
+-- pascal2 n = addSums (pascal2 (n-1))
+-- pascal2 = [1] ++ (addSums $ tail pascal2)
+-- p :: [[Int]]
+-- p = scanl (addSums . (++)) [1] []
+

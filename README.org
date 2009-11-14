@@ -126,8 +126,36 @@ The order does matter, the first matching expression will be executed
   First haskell checks the type and IF is well typed than the expression is evaluated.
 
 
-
 * Programming with lazy evaluation
   - In general we use leftmost evaluation
   - some pre-defined arithmetical operators require fully evaluated arguments
   - with pattern matching arguments are evaluated until one can decide which to pick
+
+* Monads
+  *return :: a -> IO a*
+  Does nothing and incapsulates an object of type a.
+  
+  *(>>) :: IO a -> IO b -> IO b*
+  chain something somewhere else.
+
+  For example:
+  *getChar >> return ()* takes a character and then ignores it.
+
+  *(>>=) :: Io a -> (a -> IO b) *
+  It gives you back another action.
+
+  Getting input from the shell:
+
+#+begin_src haskell
+  gets :: Int -> IO String
+  gets 0 = return []
+  gets (n+1) = getChar >>= \x -> gets n
+  -- which can be written much better as
+  
+  gets = do
+    x <- getChar
+    xs <- gets
+    return (x:xs)
+#+end_src
+
+    In general monads are used to separate computations from inside the monads.
