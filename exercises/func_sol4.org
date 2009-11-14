@@ -34,20 +34,39 @@ SHEET4
   fact2 x = foldl (*) 1 [1..x]
   
   -- even easier
-  fact3 x = product [0..x]
+  fact3 x = product [1..x]
   
   -- using scan, factorial in a constructive way
   fact4 x = last $ scanl (*) 1 [1..x]
+  
+  factorials = [fact4 x | x <- [0..]]
 #+end_src
 
 ** (b) /sumWhile/ function
    
 #+begin_src haskell
-  -- we take the last value from the list of the sums of
-  -- all the possible initial lists
+  sumListCond :: Int -> Int -> [Int] -> Int
+  sumListCond l n xs | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
+                     | otherwise = foldl (+) 0 (take (l - 1) xs)
+  
   sumWhile :: Int -> [Int] -> Int
-  sumWhile max xs = last $ filter (< max) (map sum (inits xs))
+  sumWhile n xs = sumListCond 0 n xs
 #+end_src
 
 * Exercise 3
-
+#+begin_src haskell
+  -- The complexity can be linear if the calculation of the next row of
+  -- the triangle harnesses the result of the last calculated row.
+  
+  zipWithPad :: (a -> b -> c) -> a -> b -> [a] -> [b] -> [c]
+  zipWithPad f v w [] []         = []
+  zipWithPad f v w (x:xs) []     = (f x w) : zipWithPad f v w xs []
+  zipWithPad f v w [] (y:ys)     = (f v y) : zipWithPad f v w [] ys
+  zipWithPad f v w (x:xs) (y:ys) = (f x y) : zipWithPad f v w xs ys
+  
+  nextRow :: [[Int]] -> [[Int]]
+  nextRow (x:xs) = ([1] ++ zipWithPad (+) 0 0 x (drop 1 x)) : nextRow xs
+  
+  pascal2 :: [[Int]]
+  pascal2 = [1] : nextRow pascal2
+#+end_src
