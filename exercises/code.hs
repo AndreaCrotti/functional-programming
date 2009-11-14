@@ -158,6 +158,8 @@ splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
 -- addSums :: [[Int]] -> [[Int]]
 -- addSums l = l ++ [ a + b | (a, b) <- getCouples (last l) ]
 --;;--getCouples :: [Int] -> [(Int)]
+addSums [] = []
+addSums l = take ((length l) - 1) l ++ getCouples (last l)
 getCouples :: [Int] -> [(Int, Int)]
 getCouples l = zip (take ((length l) - 1) l) (drop 1 l)
 

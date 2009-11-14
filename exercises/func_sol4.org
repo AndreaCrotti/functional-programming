@@ -46,15 +46,20 @@ SHEET4
 ** (b) /sumWhile/ function
    
 #+begin_src haskell
-  sumListCond :: Int -> Int -> [Int] -> Int
-  sumListCond l n xs | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
-                     | otherwise = foldl (+) 0 (take (l - 1) xs)
-  
+  -- this function takes al the possible inits
+  -- of my list (for example [1, 2] -> [[], [1], [1,2]])
+  -- map sum over them and takes the last element found which is
+  -- still less than max.
+  -- works on infinite lists because takeWhile stops when sum >= max
   sumWhile :: Int -> [Int] -> Int
-  sumWhile n xs = sumListCond 0 n xs
+  sumWhile max xs = last $ takeWhile (< max) (map sum (inits xs))
   
-  sumWhile2 :: Int -> [Int] -> Int
-  sumWhile2 max xs = last $ takeWhile (< max) (map sum (inits xs))
+  -- sumListCond :: Int -> Int -> [Int] -> Int
+  -- sumListCond l n xs | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
+  --                    | otherwise = foldl (+) 0 (take (l - 1) xs)
+  
+  -- sumWhile2 :: Int -> [Int] -> Int
+  -- sumWhile2 n xs = sumListCond 0 n xs
 #+end_src
 
 * Exercise 3
