@@ -158,19 +158,18 @@ splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
 -- addSums :: [[Int]] -> [[Int]]
 -- addSums l = l ++ [ a + b | (a, b) <- getCouples (last l) ]
 --;;--getCouples :: [Int] -> [(Int)]
+--build :: Int -> [[Int]]
 addSums [] = []
-addSums l = take ((length l) - 1) l ++ getCouples (last l)
-getCouples :: [Int] -> [(Int, Int)]
-getCouples l = zip (take ((length l) - 1) l) (drop 1 l)
+addSums l = newRow (last l) : l
+-- newRow :: [Int] -> [(Int, Int)]
+newRow :: [Int] -> [Int]
+newRow l = head l : [ a + b | (a, b) <- zip (take ((length l) - 1) l) (drop 1 l) ] ++ [last l]
 
 -- we take the last value from the list of the sums of
 -- all the possible initial lists
 sumWhile :: Int -> [Int] -> Int
-sumWhile max xs = last $ takeWhile (< max) (map sum (inits xs))
+sumWhile max xs = last $ takeWhile (< max) (map sum (myInits xs))
 
--- pascal2 0 = [1,1]
--- pascal2 n = addSums (pascal2 (n-1))
--- pascal2 = [1] ++ (addSums $ tail pascal2)
--- p :: [[Int]]
--- p = scanl (addSums . (++)) [1] []
-
+myInits                   :: [a] -> [[a]]
+myInits []                =  [[]]
+myInits (x:xs)            =  [[]] ++ map (x:) (myInits xs)           
