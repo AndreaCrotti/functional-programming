@@ -45,7 +45,7 @@ SHEET4
 ** (b) /sumWhile/ function
    
 #+begin_src haskell
-  umListCond :: Int -> Int -> [Int] -> Int
+  sumListCond :: Int -> Int -> [Int] -> Int
   sumListCond l n xs | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
                      | otherwise = foldl (+) 0 (take (l - 1) xs)
   
