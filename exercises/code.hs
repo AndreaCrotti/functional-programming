@@ -162,7 +162,7 @@ splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
 addSums [] = []
 addSums l = newRow (last l) : l
 -- newRow :: [Int] -> [(Int, Int)]
-newRow :: [Int] -> [Int]
+unewRow :: [Int] -> [Int]
 newRow l = head l : [ a + b | (a, b) <- zip (take ((length l) - 1) l) (drop 1 l) ] ++ [last l]
 
 -- we take the last value from the list of the sums of

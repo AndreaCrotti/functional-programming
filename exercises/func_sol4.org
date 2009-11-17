@@ -1,5 +1,5 @@
 SHEET4
-#+SETUPFILE options.org
+#+SETUPFILE: options.org
 * TODO Sheet4
   DEADLINE: <2009-11-18 Mer>
   
@@ -39,16 +39,17 @@ SHEET4
   -- using scan, factorial in a constructive way
   fact4 x = last $ scanl (*) 1 [1..x]
   
+  -- infinite list of all factorials
   factorials = scanl (*) 1 [1..]
 #+end_src
 
 ** (b) /sumWhile/ function
    
-#+begin_src haskell
+#+BEGIN_SRC haskell
   sumListCond :: Int -> Int -> [Int] -> Int
-  sumListCond l n xs | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
-                     | otherwise = foldl (+) 0 (take (l - 1) xs)
-  
+  sumListCond l n xs
+      | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
+      | otherwise = foldl (+) 0 (take (l - 1) xs)
   sumWhile :: Int -> [Int] -> Int
   sumWhile n xs = sumListCond 0 n xs
   
@@ -59,7 +60,7 @@ SHEET4
   -- works on infinite lists because takeWhile stops when sum >= max
   sumWhile2 :: Int -> [Int] -> Int
   sumWhile2 max xs = last $ takeWhile (< max) (map sum (inits xs))
-#+end_src
+#+END_SRC
 
 * Exercise 3
 #+begin_src haskell
