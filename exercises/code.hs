@@ -162,7 +162,7 @@ splits xs = [ (take n xs, drop n xs) | n <- [0..(length xs)]]
 addSums [] = []
 addSums l = newRow (last l) : l
 -- newRow :: [Int] -> [(Int, Int)]
-unewRow :: [Int] -> [Int]
+newRow :: [Int] -> [Int]
 newRow l = head l : [ a + b | (a, b) <- zip (take ((length l) - 1) l) (drop 1 l) ] ++ [last l]
 
 -- we take the last value from the list of the sums of
@@ -172,4 +172,29 @@ sumWhile max xs = last $ takeWhile (< max) (map sum (myInits xs))
 
 myInits                   :: [a] -> [[a]]
 myInits []                =  [[]]
-myInits (x:xs)            =  [[]] ++ map (x:) (myInits xs)           
+myInits (x:xs)            =  [[]] ++ map (x:) (myInits xs)
+
+
+getText :: IO String
+getText = do
+  x <- getChar
+  if x == '\n'
+     then
+         return ""
+     -- here another do is needed having nested
+     -- stuff
+     else do
+         xs <- getText
+         return (x:xs)
+
+
+getInt :: IO Int
+getInt = do
+  n <- getText
+  return (read n::Int)
+  
+draw = do
+  n <- getInt
+  putStrLn (concat $ take n $ repeat "*")
+  
+  return n
