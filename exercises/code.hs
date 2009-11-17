@@ -175,14 +175,25 @@ myInits []                =  [[]]
 myInits (x:xs)            =  [[]] ++ map (x:) (myInits xs)
 
 
+zipWithPad :: (a -> b -> c) -> a -> b -> [a] -> [b] -> [c]
+zipWithPad f v w [] []         = []
+zipWithPad f v w (x:xs) []     = (f x w) : zipWithPad f v w xs []
+zipWithPad f v w [] (y:ys)     = (f v y) : zipWithPad f v w [] ys
+zipWithPad f v w (x:xs) (y:ys) = (f x y) : zipWithPad f v w xs ys
+                                 
+nextRow :: [[Integer]] -> [[Integer]]
+nextRow (x:xs) = ([1] ++ zipWithPad (+) 0 0 x (drop 1 x)) : nextRow xs
+  
+pascal2 :: [[Integer]]
+pascal2 = [1] : nextRow pascal2
+
+
 getText :: IO String
 getText = do
   x <- getChar
   if x == '\n'
      then
          return ""
-     -- here another do is needed having nested
-     -- stuff
      else do
          xs <- getText
          return (x:xs)
@@ -193,8 +204,20 @@ getInt = do
   n <- getText
   return (read n::Int)
   
+draw :: IO ()
 draw = do
   n <- getInt
-  putStrLn (concat $ take n $ repeat "*")
-  
-  return n
+  mapM_ (\_ ->putStrLn (concat $ replicate n "*")) [1..n]
+
+
+data MyMaybe a = Value a | Error
+
+instance Monad MyMaybe where
+    return = Value
+    Error >>= q = Error
+    Value x >>= q = q x
+    
+instance Show a => Show (MyMaybe a) where
+    show Error = "an error occurred"
+    show (Value x) = show x
+    

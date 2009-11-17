@@ -1,8 +1,8 @@
 SHEET3
 #+SETUPFILE: options.org
 
-* TODO Sheet3
-  DEADLINE: <2009-11-11 Mer>
+* DONE Sheet3
+  DEADLINE: <2009-11-11 Mer> CLOSED: [2009-11-17 Mar 16:16]
   
 * Exercise 1
 ** (a)

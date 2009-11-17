@@ -5,13 +5,58 @@ SHEET5
   DEADLINE: <2009-11-25 Mer>
 
 * Exercise 1
-** (a)
-   
-** (b)
+** (a) /getText/
 
-** (c)
+#+BEGIN_SRC haskell 
+getText :: IO String
+getText = do
+  x <- getChar
+  if x == '\n'
+     then
+         return ""
+     else do
+         xs <- getText
+         return (x:xs)
+#+END_SRC
+   
+   
+** (b) /getInt/
+   
+#+BEGIN_SRC haskell 
+getInt :: IO Int
+getInt = do
+  n <- getText
+  return (read n::Int)
+#+END_SRC
+
+
+** (c) /draw/
+   
+#+BEGIN_SRC haskell 
+draw :: IO ()
+draw = do
+  putStr "please enter a non-negative number"
+  n <- getInt
+  mapM_ (\_ ->putStrLn (concat $ replicate n "*")) [1..n]
+#+END_SRC
 
 * Exercise 2
+  Given the following
+  
+
+#+BEGIN_SRC haskell 
+data MyMaybe a = Value a | Error
+
+instance Monad MyMaybe where
+    return = Value
+    Error >>= q = Error
+    Value x >>= q = q x
+    
+instance Show a => Show (MyMaybe a) where
+    show Error = "an error occurred"
+    show (Value x) = show x
+#+END_SRC
+
 ** (a)
 
 ** (b)
