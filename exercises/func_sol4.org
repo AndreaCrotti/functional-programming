@@ -40,18 +40,24 @@ SHEET4
   fact4 x = last $ scanl (*) 1 [1..x]
   
   -- infinite list of all factorials
-  factorials = scanl (*) 1 [1..]
+  factorials = [fact4 x | x <- [0..]]
 #+end_src
 
 ** (b) /sumWhile/ function
    
 #+BEGIN_SRC haskell
+  -- Beside being able to handle an infinite list, sumWhile must also able to
+  -- terminate on a finit list whose sum of all the elements less than n, for
+  -- example, sumWhile 7 [1, 1, 1].
+  
   sumListCond :: Int -> Int -> [Int] -> Int
-  sumListCond l n xs
-      | foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
-      | otherwise = foldl (+) 0 (take (l - 1) xs)
+  sumListCond l n xs | foldl (+) 0 (take l xs) <= n
+                       && take (l - 1) xs /= take l xs = sumListCond (l + 1) n xs
+                     | otherwise = foldl (+) 0 (take (l - 1) xs)
+  
   sumWhile :: Int -> [Int] -> Int
-  sumWhile n xs = sumListCond 0 n xs
+  sumWhile n [] = 0
+  sumWhile n xs = sumListCond 1 n xs
   
   -- This other function is more elegant and use "inits" from Data.List
   -- of my list (for example inits [1, 2] -> [[], [1], [1,2]])
