@@ -3,14 +3,16 @@ SHEET4
 * TODO Sheet4
   DEADLINE: <2009-11-18 Mer>
   
+  
+In our exercise solutions we used the type *Integer* instead of *Int* becase working with infinite lists lead very soon to overflow errors.
+
 * Exercise 1
 ** (a) /coprime/ function
    
 #+begin_src haskell
-  coprime :: Int -> [Int]
+  coprime :: Integer -> [Integer]
   coprime x = [ y | y <- [1..x], gcd x y == 1 ]
 #+end_src
-
    
 ** (b) /split/ function
   
@@ -26,7 +28,7 @@ SHEET4
   -- There are many different ways to define the factorial funciton
   -- I will point one some interesting ones
   
-  fact1, fact2, fact3, fact4 :: Int -> Int
+  fact1, fact2, fact3, fact4 :: Integer -> Integer
   fact1 0 = 1
   fact1 x = x * (fact1 (x - 1))
   
@@ -39,22 +41,23 @@ SHEET4
   -- using scan, factorial in a constructive way
   fact4 x = last $ scanl (*) 1 [1..x]
   
-  -- infinite list of all factorials
-  factorials = [fact4 x | x <- [0..]]
+  -- infinite list of all possibile factorials
+  factorials :: [Integer]
+  factorials = scanl (*) [1..]
 #+end_src
 
 ** (b) /sumWhile/ function
    
 #+BEGIN_SRC haskell
   -- Beside being able to handle an infinite list, sumWhile must also able to
-  -- terminate on a finit list whose sum of all the elements less than n, for
+  -- terminate on a finite list whose sum of all the elements less than n, for
   -- example, sumWhile 7 [1, 1, 1].
   
-  sumListCond :: Int -> Int -> [Int] -> Int
+  sumListCond :: Integer -> Integer -> [Integer] -> Integer
   sumListCond l n xs
       |foldl (+) 0 (take l xs) <= n = sumListCond (l + 1) n xs
       |otherwise = foldl (+) 0 (take (l - 1) xs)
-  sumWhile :: Int -> [Int] -> Int
+  sumWhile :: Integer -> [Integer] -> Integer
   sumWhile n [] = 0
   sumWhile n xs = sumListCond 1 n xs
   
@@ -63,7 +66,7 @@ SHEET4
   -- them map sum over them and takes the last element found which is
   -- still less than max.
   -- works on infinite lists because takeWhile stops when sum >= max
-  sumWhile2 :: Int -> [Int] -> Int
+  sumWhile2 :: Integer -> [Integer] -> Integer
   sumWhile2 max xs = last $ takeWhile (< max) (map sum (inits xs))
 #+END_SRC
 
@@ -78,9 +81,9 @@ SHEET4
   zipWithPad f v w [] (y:ys)     = (f v y) : zipWithPad f v w [] ys
   zipWithPad f v w (x:xs) (y:ys) = (f x y) : zipWithPad f v w xs ys
   
-  nextRow :: [[Int]] -> [[Int]]
+  nextRow :: [[Integer]] -> [[Integer]]
   nextRow (x:xs) = ([1] ++ zipWithPad (+) 0 0 x (drop 1 x)) : nextRow xs
   
-  pascal2 :: [[Int]]
+  pascal2 :: [[Integer]]
   pascal2 = [1] : nextRow pascal2
 #+end_src
