@@ -238,7 +238,24 @@ eval (Div t u) = do
 
 data MyMaybe2 a = Value2 a | Error2 String
 
-instance Show a => Monad MyMaybe2 where
+instance Monad MyMaybe2 where
     return = Value2
-    Error x >>= 
+    Error2 x >>= q = Error2 x
+    Value2 x >>= q = q x
     
+instance Show a => Show (MyMaybe2 a) where
+    show (Value2 x) = show x
+    show (Error2 err) = err
+
+eval2 :: Term -> MyMaybe2 Float
+eval2 (Log x) = do
+  y <- eval2 x
+  if y <= 0
+  then Error2 ("Cannot take logarithm of non-positive number " ++ show y ++ "!")
+  else return $ log y
+
+eval2 (Con x) = Value2 x
+eval2 (Div t u) = do
+  x <- eval2 t
+  y <- eval2 u
+  if y /= 0 then return (x/y) else Error2 "Cannot divide by zero!"
