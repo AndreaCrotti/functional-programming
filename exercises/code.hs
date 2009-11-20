@@ -221,3 +221,24 @@ instance Show a => Show (MyMaybe a) where
     show Error = "an error occurred"
     show (Value x) = show x
     
+data Term = Con Float | Div Term Term | Log Term
+
+eval :: Term -> MyMaybe Float
+eval (Log x) = do
+  y <- eval x
+  if y <= 0 then Error else return $ log y
+
+eval (Con x) = Value x
+eval (Div t u) = do
+  x <- eval t
+  y <- eval u
+  if y /= 0 then return (x/y) else Error
+
+-- extend to make possible use of logarithms
+
+data MyMaybe2 a = Value2 a | Error2 String
+
+instance Show a => Monad MyMaybe2 where
+    return = Value2
+    Error x >>= 
+    

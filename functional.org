@@ -1,6 +1,5 @@
 Different strategies of evaluation
 
-
 * Innermost
   call by value
 

@@ -1,7 +1,7 @@
 SHEET5
 #+SETUPFILE: options.org
 
-* TODO SHEET5
+* TODO
   DEADLINE: <2009-11-25 Mer>
 
 * Exercise 1
@@ -38,11 +38,12 @@ draw = do
   putStr "please enter a non-negative number"
   n <- getInt
   mapM_ (\_ ->putStrLn (concat $ replicate n "*")) [1..n]
+  -- would be even better using replicateM_ from Control.monad
+  -- replicateM_ n (\_ -> put ...)
 #+END_SRC
 
 * Exercise 2
-  Given the following
-  
+  Given the following:
 
 #+BEGIN_SRC haskell 
 data MyMaybe a = Value a | Error
@@ -57,8 +58,30 @@ instance Show a => Show (MyMaybe a) where
     show (Value x) = show x
 #+END_SRC
 
-** (a)
+** (a) Prove the three monad laws for it
 
-** (b)
+*** (1) p >>= return = p
+
+*** (2) return x >>= f = f x
+   
+*** (3) (p >>= \x -> q) >>= \y - >r = p >>= \x -> (q >>= \y -> r)
+    
+** (b) Extend the data type Term with logarithm and let eval handle it
+
+#+BEGIN_SRC haskell 
+data Term = Con Float | Div Term Term | Log Term
+
+eval :: Term -> MyMaybe Float
+eval (Log x) = do
+  y <- eval x
+  if y <= 0 then Error else return $ log y
+
+eval (Con x) = Value x
+eval (Div t u) = do
+  x <- eval t
+  y <- eval u
+  if y /= 0 then return (x/y) else Error
+#+END_SRC
+
 
 ** (c)

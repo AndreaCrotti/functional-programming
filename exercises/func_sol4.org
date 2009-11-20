@@ -1,10 +1,10 @@
 SHEET4
 #+SETUPFILE: options.org
-* TODO Sheet4
-  DEADLINE: <2009-11-18 Mer>
+* DONE Sheet4
+  DEADLINE: <2009-11-18 Mer> CLOSED: [2009-11-18 Mer 11:39]
   
-  
-In our exercise solutions we used the type *Integer* instead of *Int* becase working with infinite lists lead very soon to overflow errors.
+
+In our exercise solutions we used the type *Integer* instead of *Int* because working with infinite lists lead very soon to overflow errors.
 
 * Exercise 1
 ** (a) /coprime/ function
