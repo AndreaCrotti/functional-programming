@@ -35,7 +35,7 @@ getInt = do
 #+BEGIN_SRC haskell 
 draw :: IO ()
 draw = do
-  putStr "please enter a non-negative number"
+  putStr "Please enter a non-negative integer: "
   n <- getInt
   mapM_ (\_ ->putStrLn (concat $ replicate n "*")) [1..n]
   -- would be even better using replicateM_ from Control.monad
@@ -63,10 +63,38 @@ instance Show a => Show (MyMaybe a) where
 *** (1) p >>= return = p
     
 
+If p is Value a, Value a >>= return = Value a, which is p, because return = Value.
+If p is Error, Error >>= return = Error, which is p, because Error >>= q = Error.
+Therefore, it has been shown that p >>= return = p is satisfied.
+
 *** (2) return x >>= f = f x
    
+If x is a, return a >>= f = Value a >>= f
+                          = f a, which is f x, because Value x >>= q = q x.
+Therefore, it has been shown that return x >>= f = f x is satisfied.
+
 *** (3) (p >>= \x -> q) >>= \y - >r = p >>= \x -> (q >>= \y -> r)
     
+If p is Error, the left-hand side evaluates as follows:
+  (Error >>= \x -> q) is Error, and subsequently (p >>= \x -> q) >>= \y -> r is Error because Error >>= q = Error.
+While if p is Error, the right-hand side evaluates as follows:
+  (q >>= \y -> r) has to evaluate to Error to satisfy Error >>= q = Error because p is Error.
+Hence, both the left-hand side and the right-hand side evaluate the same.
+
+If p is Value a, the left-hand side evaluates as follows:
+  (p >>= \x -> q) can be Value b or Error.
+  If (p >>= \x -> q) is Value b, (p >>= \x -> q) >>= \y -> r can be Value c or Error.
+  If (p >>= \x -> q) is Error, (p >>= \x -> q) >>= \y -> r is Error.
+While if p is Value a, the right-hand side evaluates as follows:
+  (q >>= \y -> r) can be Value c or Error.
+  If (q >>= \y -> r) is Value c, p must not Error because Error >>= q = Error.
+    Since p is Value a, there is no contradiction.
+  If (q >>= \y -> r) is Error, p >>= \x -> (q >>= \y -> r), p can be Value a or Error since Value x >>= q = q x.
+    Since p can be Value a and it is, there is no contradiction.
+Thus, both the left-hand side and the right-hand side evaluate the same.
+
+Therefore, it has been shown that (p >>= \x -> q) >>= \y -> r = p >>= \x -> (q >>= \y -> r), if x does not ocur in r, is satisfied.
+
 ** (b) Extend the data type Term with logarithm and let eval handle it
 
 #+BEGIN_SRC haskell 
