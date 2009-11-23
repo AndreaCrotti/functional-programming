@@ -207,8 +207,7 @@ getInt = do
 draw :: IO ()
 draw = do
   n <- getInt
-  mapM_ (\_ ->putStrLn (concat $ replicate n "*")) [1..n]
-
+  mapM_ (\_ -> putStrLn (concat $ replicate n "*")) [1..n]
 
 data MyMaybe a = Value a | Error
 
@@ -250,9 +249,7 @@ instance Show a => Show (MyMaybe2 a) where
 eval2 :: Term -> MyMaybe2 Float
 eval2 (Log x) = do
   y <- eval2 x
-  if y <= 0
-  then Error2 ("Cannot take logarithm of non-positive number " ++ show y ++ "!")
-  else return $ log y
+  if y <= 0 then Error2 ("Cannot take logarithm of non-positive number " ++ show y ++ "!") else return $ log y
 
 eval2 (Con x) = Value2 x
 eval2 (Div t u) = do

@@ -60,12 +60,17 @@ instance Show a => Show (MyMaybe a) where
 
 ** (a) Prove the three monad laws for it
 
-*** (1) p >>= return = p
-    
+*** (1) $p >>= return = p$
+    We see the two cases:
+    - (Value x) >>= return = return x = Value x
+    - Error >>= return = Error (pattern matching on q)
 
-*** (2) return x >>= f = f x
-   
+*** (2) $return x >>= f = f x$
+    - return x = Value x >>= f = f x
+# TODO: Necessary also for the Error case?
+
 *** (3) (p >>= \x -> q) >>= \y - >r = p >>= \x -> (q >>= \y -> r)
+    
     
 ** (b) Extend the data type Term with logarithm and let eval handle it
 
