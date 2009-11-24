@@ -1,6 +1,7 @@
 SHEET5
 #+STARTUP: showall
 #+SETUPFILE: options.org
+#+OPTIONS: \n:nil
 
 * TODO
   DEADLINE: <2009-11-25 Mer>
@@ -60,43 +61,70 @@ instance Show a => Show (MyMaybe a) where
 #+END_SRC
 
 ** (a) Prove the three monad laws for it
+   Before starting we number the three "rules" that we already have to be able to reference them later.
 
-*** (1) $p >>= return = p$
-    We see the two cases:
-    - (Value x) >>= return = return x = Value x
-    - Error >>= return = Error (pattern matching on q)
+#+BEGIN_SRC haskell
+   return = Value               (1)
+   Error >>= q = Error          (2)
+   Value x >>= q = q x          (3)
+#+END_SRC
 
-    If p is Value a, Value a >>= return = Value a, which is p, because return = Value.
-    If p is Error, Error >>= return = Error, which is p, because Error >>= q = Error.
-    Therefore, it has been shown that p >>= return = p is satisfied.
+*** (1) p >>= return = p
+    We have 2 cases:
+    - (Value x) >>= return = return x (3)
+      return x = Value x (1)
+    - Error >>= return = Error (2)
+      
+#     If p is Value a, Value a >>= return = Value a, which is p, because return = Value.
+#     If p is Error, Error >>= return = Error, which is p, because Error >>= q = Error.
+#     Therefore, it has been shown that p >>= return = p is satisfied.
 
 *** (2) return x >>= f = f x
-   
-    If x is a, return a >>= f = Value a >>= f
-    = f a, which is f x, because Value x >>= q = q x.
-    Therefore, it has been shown that return x >>= f = f x is satisfied.
+     - return x = Value x (1)
+     - Value x >>= f = f x (3)
+
+#     If x is a, return a >>= f = Value a >>= f
+#     = f a, which is f x, because Value x >>= q = q x.
+#     Therefore, it has been shown that return x >>= f = f x is satisfied.
 
 *** (3) (p >>= \x -> q) >>= \y - >r = p >>= \x -> (q >>= \y -> r)
     
-    If p is Error, the left-hand side evaluates as follows:
-    (Error >>= \x -> q) is Error, and subsequently (p >>= \x -> q) >>= \y -> r is Error because Error >>= q = Error.
-    While if p is Error, the right-hand side evaluates as follows:
-    (q >>= \y -> r) has to evaluate to Error to satisfy Error >>= q = Error because p is Error.
-    Hence, both the left-hand side and the right-hand side evaluate the same.
+    As before we have to check the law on *Error* and *Value*.
+    
+    Case p = Error
+    - Error >>= \x -> q = Error (2)
+    - Error >>= \y -> r = Error (2)
+    - Error = Error >>= \x -> (p >>= \y -> r)
+    - Error = Error
+    
+    Case p = Value x
+    - (Value x >>= \x -> q) = (\x -> q) x = q  (3 and lambda reduction)
+    - q >>= \y -> r = r (3 and lambda reduction)
+    - r = p >>= \x -> (q >>= \y -> r) (3 and lambda reduction)
+    - r = q >>= \y -> r (3 and lambda reduction)
+    - r = r
+    
+    So we dimonstrated for both possible cases, the monad law is then valid.
 
-    If p is Value a, the left-hand side evaluates as follows:
-    (p >>= \x -> q) can be Value b or Error.
-    If (p >>= \x -> q) is Value b, (p >>= \x -> q) >>= \y -> r can be Value c or Error.
-    If (p >>= \x -> q) is Error, (p >>= \x -> q) >>= \y -> r is Error.
-    While if p is Value a, the right-hand side evaluates as follows:
-    (q >>= \y -> r) can be Value c or Error.
-    If (q >>= \y -> r) is Value c, p must not Error because Error >>= q = Error.
-    Since p is Value a, there is no contradiction.
-    If (q >>= \y -> r) is Error, p >>= \x -> (q >>= \y -> r), p can be Value a or Error since Value x >>= q = q x.
-    Since p can be Value a and it is, there is no contradiction.
-    Thus, both the left-hand side and the right-hand side evaluate the same.
+#     If p is Error, the left-hand side evaluates as follows:
+#     (Error >>= \x -> q) is Error, and subsequently (p >>= \x -> q) >>= \y -> r is Error because Error >>= q = Error.
+#     While if p is Error, the right-hand side evaluates as follows:
+#     (q >>= \y -> r) has to evaluate to Error to satisfy Error >>= q = Error because p is Error.
+#     Hence, both the left-hand side and the right-hand side evaluate the same.
 
-    Therefore, it has been shown that (p >>= \x -> q) >>= \y -> r = p >>= \x -> (q >>= \y -> r), if x does not ocur in r, is satisfied.
+#     If p is Value a, the left-hand side evaluates as follows:
+#     (p >>= \x -> q) can be Value b or Error.
+#     If (p >>= \x -> q) is Value b, (p >>= \x -> q) >>= \y -> r can be Value c or Error.
+#     If (p >>= \x -> q) is Error, (p >>= \x -> q) >>= \y -> r is Error.
+#     While if p is Value a, the right-hand side evaluates as follows:
+#     (q >>= \y -> r) can be Value c or Error.
+#     If (q >>= \y -> r) is Value c, p must not Error because Error >>= q = Error.
+#     Since p is Value a, there is no contradiction.
+#     If (q >>= \y -> r) is Error, p >>= \x -> (q >>= \y -> r), p can be Value a or Error since Value x >>= q = q x.
+#     Since p can be Value a and it is, there is no contradiction.
+#     Thus, both the left-hand side and the right-hand side evaluate the same.
+
+#     Therefore, it has been shown that (p >>= \x -> q) >>= \y -> r = p >>= \x -> (q >>= \y -> r), if x does not ocur in r, is satisfied.
 
 ** (b) Extend the data type Term with logarithm and let eval handle it
 
