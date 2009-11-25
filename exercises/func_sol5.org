@@ -71,23 +71,18 @@ instance Show a => Show (MyMaybe a) where
 
 *** (1) p >>= return = p
     We have 2 cases:
-    - (Value x) >>= return = return x (3)
-      return x = Value x (1)
-    - Error >>= return = Error (2)
-      
-#     If p is Value a, Value a >>= return = Value a, which is p, because return = Value.
-#     If p is Error, Error >>= return = Error, which is p, because Error >>= q = Error.
-#     Therefore, it has been shown that p >>= return = p is satisfied.
+    - (Value x) >>= return = return x (by 3)
+      return x = Value x              (by 1)
+    - Error >>= return = Error        (by 2)
+    Hence, we show that the right neutrality is satisfied.
 
 *** (2) return x >>= f = f x
-     - return x = Value x (1)
-     - Value x >>= f = f x (3)
+    We have 2 cases:
+     - return x = Value x    (by 1)
+     - (Value x) >>= f = f x (by 3)
+    Hence, we show that the left neutrality is satisfied.
 
-#     If x is a, return a >>= f = Value a >>= f
-#     = f a, which is f x, because Value x >>= q = q x.
-#     Therefore, it has been shown that return x >>= f = f x is satisfied.
-
-*** (3) (p >>= \x -> q) >>= \y - >r = p >>= \x -> (q >>= \y -> r)
+*** (3) (p >>= \x -> q) >>= \y -> r = p >>= \x -> (q >>= \y -> r)
     
     As before we have to check the law on *Error* and *Value*.
 #     We use \beta reductions to further simplify our expressions, which is simply the rule.
