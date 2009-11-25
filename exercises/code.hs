@@ -172,7 +172,7 @@ sumWhile max xs = last $ takeWhile (< max) (map sum (myInits xs))
 
 myInits                   :: [a] -> [[a]]
 myInits []                =  [[]]
-myInits (x:xs)            =  [[]] ++ map (x:) (myInits xs)
+myInits (x:xs)            =  [] : map (x:) (myInits xs)
 
 
 zipWithPad :: (a -> b -> c) -> a -> b -> [a] -> [b] -> [c]
@@ -260,3 +260,4 @@ eval2 (Div t u) = do
   if y /= 0
    then return (x/y)
    else Error2 "Cannot divide by zero!"
+
