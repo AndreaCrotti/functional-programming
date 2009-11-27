@@ -1,0 +1,36 @@
+#+SETUPFILE: options.org
+
+SHEET 6
+
+* 
+  DEADLINE: <2009-12-02 Mer>
+
+* Exercise 1
+** (a)
+#+begin_src dot :file s1.pdf :cmdline -Tpdf :exports none :results silent
+   
+#+end_src
+
+** (b)
+
+* Exercise 2
+
+** (a)
+
+** (b)
+
+** (c)
+
+* Exercise 3
+
+** (a)
+
+** (b)
+
+* Exercise 4
+
+** (a)
+
+** (b)
+
+** (c)
