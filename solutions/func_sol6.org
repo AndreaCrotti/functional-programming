@@ -1,4 +1,5 @@
 #+SETUPFILE: options.org
+#+OPTIONS: showall
 
 SHEET 6
 
@@ -7,9 +8,14 @@ SHEET 6
 
 * Exercise 1
 ** (a)
-#+begin_src dot :file s1.pdf :cmdline -Tpdf :exports none :results silent
-   
+#+begin_src dot :file graphs/6_1.pdf :cmdline -Tpdf :exports none :results silent
+digraph {
+	root [label="B α"];
+	root -> root;
+}
 #+end_src
+
+[[file:graphs/6_1.pdf]]
 
 ** (b)
 
@@ -34,3 +40,4 @@ SHEET 6
 ** (b)
 
 ** (c)
+ 
