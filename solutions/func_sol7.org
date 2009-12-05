@@ -1,0 +1,19 @@
+#+SETUPFILE: options.org
+
+* Exercise 1
+
+* Exercise 2
+
+** (a) \phi_{sum} is monotonic
+
+** (b) \phi_{sum} is continuous
+
+* Exercise 3
+
+** (a) give the Haskell definitions for the higher order functions *f_four*, *f_inf* and *f_times*
+
+** (b) give the semantics of \phi_{f_four} ...
+
+** (c)
+
+** (d)

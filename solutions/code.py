@@ -44,4 +44,4 @@ class Dom(object):
 
     def __iter__(self):
         return self.comparables
-    
+
