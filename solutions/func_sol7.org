@@ -8,7 +8,6 @@ SHEET7
   We want to prove that also
   $g \cirg f : D1 \rightarrow D3$ is also continuous.
 
-  We apply the definition of continuous function and get
   In other words we want to prove that:
   $\bigsqcup g (f (s)) = g (f (\bigsqcup s))$
   We use the following chain of equivalences:
@@ -17,17 +16,58 @@ SHEET7
     
 
 * Exercise 2
+  Let $S \sqsubseteq \langle Z \rightarrow Z \rangle$ be a chain of continuous functions $S = {g1, g2, g3, ...}$
 
 ** (a) \phi_{sum} is monotonic
+   \phi_{sum} is monotonic then $g1 \sqsubseteq g2 \rightarrow \phi_{sum}(g1) \sqsubseteq \phi_{sum}(g2)$
+   
+*** Case 1: x is \bot
+    $\phi_{sum}(g1))(\bot) = (\phi_{sum}(g2))(\bot) =$ \newline
+    \begin{gathered}
+    1 if x < 0 \\
+    \bot otherwise \\
+    \end{gathered}
+    
+    So, \phi_{sum} is as defined as \phi_{sum}(g2).
+
+f\left( x \right) = \left\{ \begin{gathered}
+  ax + b \hfill \\
+  cx^2  + d \hfill \\
+  ex^3  + fx + g \hfill \\ 
+\end{gathered}  \right.
+
+*** Case 2: x \in Z
+    $\lbrace{some stuff \\ more stuff}$
+
 
 ** (b) \phi_{sum} is continuous
 
 * Exercise 3
 
 ** (a) give the Haskell definitions for the higher order functions *f_four*, *f_inf* and *f_times*
+  
 
-** (b) give the semantics of \phi_{f_four} ...
+#+BEGIN_SRC haskell 
+   f_four = \g -> \x -> 4
 
+   f_inf  = \g -> \x -> g (x + 4)
+   f_times = \g -> \(x, y) -> if x <= 0
+                               then 0
+                               else y + g(x - 1, y)
+#+END_SRC
+
+
+** (b) give the semantics of \phi_{f_four}
+   - (\phi_{f_four}(g))(x) = 4
+   - (\phi_{f_inf}(g))(x) = g(x + 4)
+# TODO: Insert here the stupid big curly bracket
+   - (\phi_{f_times}(g))(x, y) = 
+   
 ** (c)
+   - \phi^n{f_four}(\bot) = 4
+   - \phi^n{f_inf}(\bot) = \bot
+# TODO: curly bracket
+   - \phi^n{f_times}(\bot) = 
 
-** (d)
+** (d) Give all fixpoints of the semantic functions \phi_{f_four}, \phi_{f_inf}, and \phi_{f_times}. Which are /lub/?
+   

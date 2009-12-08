@@ -197,3 +197,24 @@ The order does matter, the first matching expression will be executed
    $\bigsqcup f(s) = f(\bigsqcup s)$
 
 ** Fix point theorem
+
+* Simple haskell
+** Some restrictions
+   1. Only one declaration /var = exp/
+
+   2. No predefined lists
+
+   3. Only allow application of expressions in form /expr1 expr2/
+
+   4. No case construct (no pattern matching)
+
+   5. Lambda expressions only with variables instead of arbitrary patterns
+
+   6. No /where/, only /let/
+
+   A simple haskell program is a program without type synomyms and no type classes and no predefined lists.
+
+** Free variable
+   - free(_var_) = { _var_ }
+   - free(_constr_) = free(_integer_)
+   - free(_float_) = free(_char_) = \empty

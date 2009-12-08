@@ -261,3 +261,20 @@ eval2 (Div t u) = do
    then return (x/y)
    else Error2 "Cannot divide by zero!"
 
+
+fact :: Int -> Int
+fact = \x -> if x <= 0 then 1 else fact (x - 1) * x
+
+four :: Int -> Int
+four = \x -> 4
+        
+f_fact = \g -> \x -> if x <= 0 then 1 else g (x-1) * x
+
+f_four :: (Int -> Int) -> Int -> Int
+f_four = \g -> \x -> 4
+
+f_inf  = \g -> \x -> g (x + 4)
+f_times = \g -> \(x, y) -> if x <= 0
+          then 0
+          else y + g(x - 1, y)
+               
