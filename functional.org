@@ -41,7 +41,6 @@ We can define functions that work on infinite data structures.
   | otherwise = y
 #+END_SRC
 
-
 ** Currying
 
 #+BEGIN_SRC haskell
@@ -62,7 +61,6 @@ We can define functions that work on infinite data structures.
 
 *** Advantages of currying
     - Apply functions to only one argument
-
 
 ** Pattern matching
 
@@ -96,7 +94,6 @@ The order does matter, the first matching expression will be executed
   -- every variable gets an unique value
 #+END_SRC
   
-
 ** Operators Infix declarations
    2 + 3 \rightarrow infix symbol
    (+) \rightarrow prefix symbol
@@ -112,7 +109,6 @@ The order does matter, the first matching expression will be executed
    - *:* associates to the right, 3:4:[] \rightarrow 3:(4:[])
 
    - function application associates to the left (square square 3)
-
 
 ** Priority
    We can define a number of priority in infix priority (between 0 and 9 (which is default)).
@@ -190,3 +186,14 @@ The order does matter, the first matching expression will be executed
 
 
    
+
+
+* Theory
+** Monotonic function
+   
+   
+** Continuos function
+   If $f : D1 -> D2$
+   $\bigsqcup f(s) = f(\bigsqcup s)$
+
+** Fix point theorem

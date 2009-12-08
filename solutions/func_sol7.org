@@ -1,6 +1,20 @@
+SHEET7
 #+SETUPFILE: options.org
+# Useful symbols, \circ, \bigsqcup
 
 * Exercise 1
+  For the definition of continuous functions
+  $\bigsqcup f (s) = f(\bigsqcup s)$ and $\bigsqcup g (s) = g(\bigsqcup s)$
+  We want to prove that also
+  $g \cirg f : D1 \rightarrow D3$ is also continuous.
+
+  We apply the definition of continuous function and get
+  In other words we want to prove that:
+  $\bigsqcup g (f (s)) = g (f (\bigsqcup s))$
+  We use the following chain of equivalences:
+  - $\bigsqcup g(f (s)) = g (\bigsqcup f (s))$  -- applying continuity of g
+  - $g (\bigsqcup f (s)) = g (f (\bigsqcup s))$ -- applying continuity of f
+    
 
 * Exercise 2
 
