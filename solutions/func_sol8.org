@@ -1,0 +1,20 @@
+SHEET8
+#+SETUPFILE: options.org
+
+* Exercise 1
+** a)
+# Create a nice graph in dot format.
+
+** b)
+
+** c)
+
+** d)
+
+* Exercise 2
+** a)
+
+** b)
+
+** c)
+

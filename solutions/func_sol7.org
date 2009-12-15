@@ -5,46 +5,126 @@ SHEET7
 * Exercise 1
   For the definition of continuous functions
   $\bigsqcup f (s) = f(\bigsqcup s)$ and $\bigsqcup g (s) = g(\bigsqcup s)$
-  We want to prove that also
-  $g \cirg f : D1 \rightarrow D3$ is also continuous.
+  \newline
+  We want to prove that also:
+  $g \circ f : D1 \rightarrow D3$ is also continuous.
 
+  \newline
   In other words we want to prove that:
   $\bigsqcup g (f (s)) = g (f (\bigsqcup s))$
   We use the following chain of equivalences:
   - $\bigsqcup g(f (s)) = g (\bigsqcup f (s))$  -- applying continuity of g
   - $g (\bigsqcup f (s)) = g (f (\bigsqcup s))$ -- applying continuity of f
-    
 
 * Exercise 2
-  Let $S \sqsubseteq \langle Z \rightarrow Z \rangle$ be a chain of continuous functions $S = {g1, g2, g3, ...}$
+  Let $S \sqsubseteq \langle \mathbb{Z} \rightarrow \mathbb{Z} \rangle$ be a chain of continuous functions $S = {g1, g2, g3, ...}$
 
 ** (a) \phi_{sum} is monotonic
    \phi_{sum} is monotonic then $g1 \sqsubseteq g2 \rightarrow \phi_{sum}(g1) \sqsubseteq \phi_{sum}(g2)$
    
 *** Case 1: x is \bot
-    $\phi_{sum}(g1))(\bot) = (\phi_{sum}(g2))(\bot) =$ \newline
-    \begin{gathered}
-    1 if x < 0 \\
-    \bot otherwise \\
-    \end{gathered}
+    $\phi_{sum}(g1))(\bot) = (\phi_{sum}(g2))(\bot) =$
+    \left \{
+    \begin{array}{ll}
+    \mbox{1 if  x <= 0} \\
+    \bot \mbox{ otherwise}
+    \end{array}
+    \right
     
     So, \phi_{sum} is as defined as \phi_{sum}(g2).
 
-f\left( x \right) = \left\{ \begin{gathered}
-  ax + b \hfill \\
-  cx^2  + d \hfill \\
-  ex^3  + fx + g \hfill \\ 
-\end{gathered}  \right.
+*** Case 2: x \in \mathbb{\mathbb{Z}}
+    \phi_{sum}(g1)(x) =
+    \left \{
+    \begin{array}{ll}
+    \mbox{1, if x <= 0} \\
+    g1(x-1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
 
-*** Case 2: x \in Z
-    $\lbrace{some stuff \\ more stuff}$
+    \phi_{sum}(g2)(x) =
+    \left \{
+    \begin{array}{ll}
+    \mbox{1, if x <= 0} \\
+    g2(x-1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
 
+    $\phi_{sum}(g1) \sqsubseteq \phi_{sum}(g2)$ because $(g1(x - 1) + x) \sqsubseteq (g2(x - 1) + x)$ \newline
 
+    Therefore, \phi_{sum} is *monotonic*.
+    
 ** (b) \phi_{sum} is continuous
+   If \phi_{sum} is continuous, then \bigsqcup \phi_{sum}(S) = \phi_{sum}(\bigsqcup S) and \phi_{sum} is monotonic.
+   Let /g/ be the /LUB/ of S, \bigsqcup S = g
+
+*** 1)
+    \phi_{sum}(\bigsqcup S)(x) = \phi_{sum}(g)(x) =
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
+
+*** 2)
+    \phi_{sum}(S) = {\phi_{sum}(g1), \phi_{sum}(g2)...} =
+    \left \{
+    \begin{array}{ll}
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g1(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \\
+    \right
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g2(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
+    \\
+    \vdots
+    \end{array}
+    \right
+
+
+    \phi_{sum}(S) = {\phi_{sum}(g1), \phi_{sum}(g2)...} =
+    \bigsqcup \left \{
+    \begin{array}{ll}
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g1(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \\
+    \right
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g2(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
+    \\
+    \vdots
+    \end{array}
+    \right =
+
+    \left \{
+    \begin{array}{ll}
+    1, \mbox{if x <= 0} \\
+    g(x - 1) + x, \mbox{otherwise} \\
+    \end{array}
+    \right
+
+    \newline \newline
+
+    Since $\bigsqcup \phi_{sum}(S) = \phi_{sum}(\bigsqcup S)$ we can finally deduce that \phi_{sum} is continuous.
 
 * Exercise 3
 
-** (a) give the Haskell definitions for the higher order functions *f_four*, *f_inf* and *f_times*
+** (a) give the Haskell definitions for the higher order functions *f\_four*, *f\_inf* and *f\_times*
   
 
 #+BEGIN_SRC haskell 
@@ -57,17 +137,54 @@ f\left( x \right) = \left\{ \begin{gathered}
 #+END_SRC
 
 
-** (b) give the semantics of \phi_{f_four}
-   - (\phi_{f_four}(g))(x) = 4
-   - (\phi_{f_inf}(g))(x) = g(x + 4)
-# TODO: Insert here the stupid big curly bracket
-   - (\phi_{f_times}(g))(x, y) = 
+** (b) give the semantics of \phi_{f\_four}
+   - (\phi_(f\_four)(g))(x) = 4
+   - (\phi_(f\_inf)(g))(x) = g(x + 4)
+   - (\phi_{f\_times}(g))(x, y) =
+     \left \{
+     \begin{array}{ll}
+     0, \mbox{if x <= 0} \\
+     y + g(x -1, y), \mbox{otherwise}\\
+     \end{array}
+     \right
    
 ** (c)
-   - \phi^n{f_four}(\bot) = 4
-   - \phi^n{f_inf}(\bot) = \bot
-# TODO: curly bracket
-   - \phi^n{f_times}(\bot) = 
+   - \phi^n{f\_four}(\bot) = 4 \newline
+   - \phi^n{f\_inf}(\bot) = \bot \newline
+   - \phi^n{f\_times}(\bot) =
+     \left \{
+     \begin{array}{ll}
+     0, \mbox{if x <= 0} \\
+     \bot, \mbox{otherwise}\\
+     \end{array}
+     \right
 
-** (d) Give all fixpoints of the semantic functions \phi_{f_four}, \phi_{f_inf}, and \phi_{f_times}. Which are /lub/?
-   
+** (d) Give all fixpoints of the semantic functions \phi_{f\_four}, \phi_{f\_inf}, and \phi_{f\_times}. Which are /lub/?
+   - fp(\phi_{f\_four}) = \tau_4(x) where \tau_4(x) = 4 \newline
+     lfp(\phi_{f\_four}) = \tau_4(x) where \tau_4(x) = 4
+
+   - fp(\phi_{f\_inf}) = { \tau_i(x) where \tau_i(x) = i | i \in \mathbb{R} \cup {\bot}} } \newline
+     lfp(\phi_{f\_inf}) = \tau_i(x) where \tau_i(x) = \bot
+
+     \newline
+     \newline
+
+   - fp(\phi_{f\_times}) = f(x y) where f(x,y) =
+     \left \{
+     \begin{array}{ll}
+     0, \mbox{if x <= 0} \\
+     x y, \mbox{if x > 0} \\
+     \bot, \mbox{otherwise}\\
+     \end{array}
+     \right
+     
+     \newline
+     lfp(\phi_{f\_times}) = f(x, y) where \newline
+     f(x, y) =
+     \left \{
+     \begin{array}{ll}
+     0, \mbox{if x <= 0} \\
+     x y, \mbox{if x > 0} \\
+     \bot, \mbox{otherwise} \\
+     \end{array}
+     \right

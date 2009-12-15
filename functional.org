@@ -218,3 +218,46 @@ The order does matter, the first matching expression will be executed
    - free(_var_) = { _var_ }
    - free(_constr_) = free(_integer_)
    - free(_float_) = free(_char_) = \empty
+
+** 12 Rules to convert complex to simple haskell
+*** Def 2.2.11
+    Complex H-expression is transformed into exp by applying some rules as long as possible.
+
+    This is the code that you want to transform to simple haskell
+#+begin_src haskell
+    append Nil z = z
+    append (Cons x y) z = Cons x (append y z)
+#+end_src
+
+    
+**** 1. Transform several flat declarations in 1 pattern declaration.
+     var pat1...patn = exp1; ... ; var pat1...patn = exp^k
+     
+**** 2. Transform lambda expressions with serveral patterns
+     \pat1 ... patn -> exp
+     \pat1 -> (\pat2 -> (\patn -> exp))
+     
+
+**** 3. Lambda expressions with non-variable patterns
+     \pat -> exp
+     \var -> case var of palth -> exp
+     
+**** 4. Translation of case to match (for eliminating case expressions)
+     case exp of {path1 -> exp1;
+                 patn -> exp2}
+
+**** 9. match for non empty tuples
+     match (pat1, ... ,patn) exp exp1 exp2
+     if this works 
+
+**** 6. match for the joker pattern (_).
+     match _ exp exp1 exp2
+     _____________________
+           exp1
+
+**** 7. match for constructors
+     match (constr pat1 patn) exp exp1 exp2
+     _____________________________________
+             if (isa constr exp)
+	         then match (pat1, patn)
+                 else exp2
