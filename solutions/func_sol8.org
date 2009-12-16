@@ -4,17 +4,40 @@ SHEET8
 * Exercise 1
 ** a)
 # Create a nice graph in dot format.
+#+begin_src dot :file graphs/8_1a.pdf :cmdline -Tpdf :exports none :results silent
+   
+#+end_src
 
 ** b)
 
 ** c)
+   - C zero \bot_{natslist \bot} has 2 = 2
+   - C (succ \bot_{nats \bot} has 2 + 2 = 4
+   - C \bot_{nats \bot} N has 2 = 2
+   - C \bot_{nats \bot} (C \bot_{nats} \bot_{natslist \bot}) has 2 + 4 = 6
+   So the 4th level contains 2 + 4 + 2 + 6 = 14 elements
 
 ** d)
 
 * Exercise 2
-** a)
+** a) /Half/
+#+begin_src haskell
+   half = \x ->
+          if isZero x then zero
+             else if isZero (pred x) then zero
+                  else sum (half (pred (pred x)))
+#+end_src
 
-** b)
+** b) /zipUsing/
+#+begin_src haskell
+   zipUsing = \x -> \f ->
+     if isNil x then Nil
+        else Cons (f (fst (head x)) (snd (head x)))
+             (zipUsing (tail x) f)
+#+end_src
 
-** c)
-
+** c) /Power/
+#+begin_src haskell
+   power = \x -> if (snd x) == 0 || fst(x) == 1 then 1
+                  else fst(x) * power(fst(x), snd(x) - 1)
+#+end_src
