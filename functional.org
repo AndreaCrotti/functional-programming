@@ -261,3 +261,7 @@ The order does matter, the first matching expression will be executed
              if (isa constr exp)
 	         then match (pat1, patn)
                  else exp2
+		 
+
+* Lambda calculus and haskell
+  Haskell sometimes doesn't need to get the normal form, when reaching a \lambda expression we stop.

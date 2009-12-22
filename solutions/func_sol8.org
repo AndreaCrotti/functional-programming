@@ -5,10 +5,40 @@ SHEET8
 ** a)
 # Create a nice graph in dot format.
 #+begin_src dot :file graphs/8_1a.pdf :cmdline -Tpdf :exports none :results silent
-   
+digraph G {
+        size ="10";
+        "A T F" -> "A T BOT";
+        "A T F" -> "A BOT F";
+        "A T T" -> "A T BOT" ;
+        "A T T" -> "A BOT T";
+        "A F F" -> "A F BOT";
+        "A F F" -> "A BOT F";
+        "A F T" -> "A F BOT";
+        "A F T" -> "A BOT T";
+        "A T BOT" -> "A BOT BOT";
+        "A F BOT" -> "A BOT BOT";
+        "A BOT T" -> "A BOT BOT";
+        "A BOT F" -> "A BOT BOT";
+        "A BOT BOT" -> "BOT";
+}
 #+end_src
 
+[[file:graphs/8_1a.pdf]]
+
 ** b)
+#+begin_src dot :file graphs/8_1b.pdf :cmdline -Tpdf :exports none :results silent
+digraph g {
+        size ="6";     
+       "C Zero BOT_natslist_bot" -> "C BOT_nats_bot BOT_natslist_bot";
+       "C (Sum BOT_notes) BOT_natslist_bot" -> "C BOT_nats_bot BOT_natslist_bot";
+       "C BOT_nats_bot N" -> "C BOT_nats_bot BOT_natslist_bot";
+       "C BOT_nats_bot (C BOT_nats_bot BOT_natslist_bot)" -> "C BOT_nats_bot BOT_natslist_bot";
+       N -> "BOT_natlist_bot";
+       "C BOT_nats_bot BOT_natslist_bot" -> "BOT_natlist_bot";
+}
+#+end_src
+
+[[file:graphs/8_1b.pdf]]
 
 ** c)
    - C zero \bot_{natslist \bot} has 2 = 2
@@ -18,9 +48,13 @@ SHEET8
    So the 4th level contains 2 + 4 + 2 + 6 = 14 elements
 
 ** d)
+   - let g = g in C Zero g
+   - let g = g in C g (C g N)
+   - let g1 = g1; g2 = g2 in C (Sum g1) (C zero g2)
 
 * Exercise 2
-** a) /Half/
+** a)
+   /Half/
 #+begin_src haskell
    half = \x ->
           if isZero x then zero
