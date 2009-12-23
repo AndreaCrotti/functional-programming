@@ -1,0 +1,308 @@
+SHEET9
+#+SETUPFILE: options.org
+# Useful symbols, \circ, \bigsqcup
+
+* Exercise 1 (1)
+  $\mathcal{V}al\ \llbracket\ \textnormal{let toNat}\ =\ \char`\\ x\ \shortrightarrow\ \textnormal{if}\ x\ ==\ \textnormal{True then 1 else 0 in toNat}\ y\ \rrbracket\ \rho$
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{toNat}\ y\ \rrbracket\ (\rho + \{\textnormal{toNat/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=\mathcal{V}al\ \llbracket\ \char`\\ x\ \shortrightarrow\ \textnormal{if}\ x == \textnormal{True then 1 else 0}\ \rrbracket\ (\rho+\{\textnormal{toNat}/d\})$
+
+  $\ \ \ \ f(d) = g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g(d')=\mathcal{V}al\ \llbracket\ \textnormal{if }\ x ==\ \textnormal{True then 1 else 0}\ \rrbracket\ (\rho + \{\textnormal{toNat}/d\} + \{x/d'\})$
+  
+  $\ \ \ \ \ \ \ \ \ \ \ \ \rho'' = \rho + \{\textnormal{toNat}/d\} + \{x/d'\}$
+
+  $\ \ \ \ \ \ \ \ g(d')=$ \left \{
+  \begin{array}{ll}
+  $\mathcal{V}al\ \llbracket\ 1\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $\mathcal{V}al\ \llbracket\ 0\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+
+  $\ \ \ \ \ \ \ \ g(d')=$ \left \{
+  \begin{array}{ll}
+  $1\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $0\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{toNat}\ y\ \rrbracket\ (\rho + \{\textnormal{toNat/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g(d') =$ \left \{
+  \begin{array}{ll}
+  $1\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $0\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  Calculating $f^i (\perp)$, $i \in \mathbb{N}$:
+
+  $(f^0 (\perp)) (d')=\perp$
+
+  $(f^n (\perp)) (d'), n \geqslant 1=$ \left \{
+  \begin{array}{ll}
+  $1\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $0\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  Therefore, lfp $f = g$.
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{toNat}\ y\ \rrbracket\ (\rho + \{\textnormal{toNat}/g\})$
+
+  $=h (\mathcal{V}al\ \llbracket\ y\ \rrbracket\ (\rho + \{\textnormal{toNat}/g\}))$
+
+  $\ \ \ \ \textnormal{where}\ \mathcal{V}al\ \llbracket\ \textnormal{toNat}\ \rrbracket\ (\rho + \{\textnormal{toNat}/g\}) = h\ \textnormal{in Functions in Dom}$
+
+  $=h (\textnormal{True})$
+
+  $\ \ \ \ \textnormal{where}\ g = h\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g (d') =$ \left \{
+  \begin{array}{ll}
+  $1\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $0\textnormal{, if }\mathcal{V}al\ \llbracket\ x ==\ \textnormal{True}\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  $=1$
+
+* Exercise 1 (2)
+  $\mathcal{V}al\ \llbracket\ \textnormal{let half}\ =\ \char`\\ x\ \shortrightarrow\ \textnormal{if}\ x\ \leqslant\ \textnormal{1 then 0 else 1 + half (x - 2) in toNat}\ y\ \rrbracket\ \rho$
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{half}\ 3\ \rrbracket\ (\rho + \{\textnormal{half/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=\mathcal{V}al\ \llbracket\ \char`\\ x\ \shortrightarrow\ \textnormal{if}\ x \leqslant \textnormal{1 then 0 else 1 + half (x - 2)}\ \rrbracket\ (\rho+\{\textnormal{half}/d\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)= g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g(d') = \mathcal{V}al\ \llbracket\ \textnormal{if } x \leqslant 1\ \textnormal{then 0 else 1 + half (x - 2)}\ \rrbracket\ (\rho + \{\textnormal{half}/d\}+\{x/d'\})$
+
+  $\ \ \ \ \ \ \ \ \ \ \ \ \rho'' = \rho + \{\textnormal{half}/d\}+\{x/d'\}$
+
+  
+  $\ \ \ \ \ \ \ \ g(d') =$ \left \{
+  \begin{array}{ll}
+  $\mathcal{V}al\ \llbracket\ 0\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ x \leqslant 1\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $\mathcal{V}al\ \llbracket\ 1 +\ \textnormal{half}\ (x - 2)\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ x \leqslant 1\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+  
+  $\ \ \ \ \ \ \ \ g(d') =$ \left \{
+  \begin{array}{ll}
+  $0{, if }d' \leqslant 1$ \\
+  $1 + d (d' - 2)\textnormal{, if }x \geq 1$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{half}\ 3\ \rrbracket\ (\rho + \{\textnormal{half/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)= g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g(d') =$ \left \{
+  \begin{array}{ll}
+  $0{, if }d' \leqslant 1$ \\
+  $1 + d (d' - 2)\textnormal{, if }x \geq 1$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  Calculating $f^i (\perp)$, $i \in \mathbb{N}$:
+
+  $(f^0(\perp)) (d') = \perp$
+
+  $(f^1(\perp)) (d') =$ \left \{
+  \begin{array}{ll}
+  $0{, if }d' \leqslant 1$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  $(f^n(\perp)) (d'), n \geqslant 2 =$ \left \{
+  \begin{array}{ll}
+  $0{, if }d' \leqslant 1$ \\
+  $\lfloor d' / 2\rfloor\textnormal{, if }d' > 1 \wedge d' < 2n$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  Therefore, lfp $f = g'\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \textnormal{where } g'(d') =$ \left \{
+  \begin{array}{ll}
+  $0{, if }d' \leqslant 1$ \\
+  $\lfloor d' / 2\rfloor\textnormal{, if }d' > 1$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{half}\ 3\ \rrbracket\ (\rho + \{\textnormal{half}/g'\})$
+
+
+  $=h (\mathcal{V}al\ \llbracket\ 3\ \rrbracket\ (\rho + \{\textnormal{half}/g'\}))$
+
+  $\ \ \ \ \textnormal{where } \mathcal{V}al\ \llbracket\ \textnormal{half}\ \rrbracket\ (\rho + \{\textnormal{half}/g'\}) = h\ \textnormal{in Functions in Dom}$
+
+  $=h(3)\ \textnormal{where }g' = h\ \textnormal{in Functions in Dom}$
+
+  $=\lfloor 3 / 2\rfloor$
+
+  $= 1$
+
+* Exercise 1 (3)
+  $\mathcal{V}al\ \llbracket\ \textnormal{let minus}\ =\ \char`\\ x\ \shortrightarrow \char`\\ y\ \shortrightarrow\ \textnormal{if}\ y\ \leqslant\ \textnormal{0 then x else minus (x - 1) (y - 1) in minus}\ x\ 1\ \rrbracket\ \rho$
+  
+  $=\mathcal{V}al\ \llbracket\ \textnormal{minus}\ x\ 1\ \rrbracket\ (\rho + \{\textnormal{minus/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=\mathcal{V}al\ \llbracket\ \char`\\ x\ \shortrightarrow \char`\\ y\ \shortrightarrow\ \textnormal{if}\ y\ \leqslant\ \textnormal{0 then x else minus (x - 1) (y - 1)}\ \rrbracket\ (\rho + \{\textnormal{minus}/d\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where}\ g(a) = \mathcal{V}al\ \llbracket\ \char`\\ y\ \shortrightarrow\ \textnormal{if}\ y\ \leqslant\ \textnormal{0 then x else minus (x - 1) (y - 1)} \rrbracket\ (\rho + \{\textnormal{minus}/d\}+\{x/a\})$
+
+  $\ \ \ \ \ \ \ \ g(a) = h\ \textnormal{h in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \ \ \ \ \textnormal{where}\ h(b) = \mathcal{V}al\ \llbracket\ \textnormal{if}\ y\ \leqslant\ \textnormal{0 then x else minus (x - 1) (y - 1)} \rrbracket\ (\rho + \{\textnormal{minus}/d\}+\{x/a\}+\{y/b\})$
+
+  $\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \rho'' = \rho + \{\textnormal{minus}/d\}+\{x/a\}+\{y/b\}$
+
+  $\ \ \ \ \ \ \ \ \ \ \ \ h(b) =$ \left \{
+  \begin{array}{ll}
+  $\mathcal{V}al\ \llbracket\ x\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ y \leqslant 0\ \rrbracket\ \rho'' =\ \textnormal{True in Constructions}_0\textnormal{ in Dom}$ \\
+  $\mathcal{V}al\ \llbracket\ \textnormal{minus}\ (x - 1)(y - 1)\ \rrbracket\ \rho''\textnormal{, if }\mathcal{V}al\ \llbracket\ y \leqslant 0\ \rrbracket\ \rho'' =\ \textnormal{False in Constructions}_0\textnormal{ in Dom}$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+  
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{minus}\ x\ 1\ \rrbracket\ (\rho + \{\textnormal{minus/lfp}\ f\})$
+
+  $\ \ \ \ \textnormal{where}\ f(d)=g\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ g(a) = h\ \textnormal{h in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \ \ \ \ \textnormal{where}\ h(b) =$ \left \{
+  \begin{array}{ll}
+  $a\textnormal{, if }b \leqslant 0$ \\
+  $d\ (a - 1)(b - 1)\textnormal{, if }b > 0$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  Calculating $f^i (\perp)$, $i \in \mathbb{N}$:
+
+  $(f^0(\perp)) (a, b) = \perp$
+
+  $(f^1(\perp)) (a, b) =$ \left \{
+  \begin{array}{ll}
+  $a{, if }b \leqslant 0$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  $(f^n(\perp)) (a, b), n \geqslant 2 =$ \left \{
+  \begin{array}{ll}
+  $a{, if }b \leqslant 0$ \\
+  $a - b\textnormal{, if }b > 0\ \wedge\ a \neq \perp\ \wedge\ b < n$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+  
+  Therefore, lfp $f = g'\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \textnormal{where } g'(a) = h'\ \textnormal{in Functions in Dom}$
+
+  $\ \ \ \ \ \ \ \ \textnormal{where } h'(b) =$ \left \{
+  \begin{array}{ll}
+  $a{, if }b \leqslant 0$ \\
+  $a - b\textnormal{, if }b > 0\ \wedge\ a \neq \perp$ \\
+  $\perp\textnormal{, otherwise}$
+  \end{array}
+  \right
+
+  $=\mathcal{V}al\ \llbracket\ \textnormal{minus}\ x\ 1\ \rrbracket\ (\rho + \{\textnormal{minus/lfp}\ g'\})$
+
+  $=j (\mathcal{V}al\ \llbracket\ x\ 1\ \rrbracket\ (\rho + \{\textnormal{minus}/g'\}))$
+
+  $\ \ \ \ \textnormal{where } \mathcal{V}al\ \llbracket\ \textnormal{minus}\ \rrbracket\ (\rho + \{\textnormal{minus}/g'\}) = j\ \textnormal{in Functions in Dom}$
+
+  $=j (8, 1)\ \textnormal{where } g' = j\ \textnormal{in Functions in Dom}$
+
+  $=8 - 1$
+
+  $=7$
+
+* Exercise 2
+  Rule 1: Transform several function declarations into one pattern declaration \\
+  let timesList = \char`\\ x1 x2 $\shortrightarrow$ case (x1, x2) of {
+
+  (n, Nil) -> Nil
+
+  (n, (Cons x xs)) -> Cons (n * x) (timesList n xs) \\
+  } in timesList 3 (Cons 5 (Cons 2 Nil))
+
+  Rule 2: Transform lambda expressions with several patterns \\
+  let timesList = \char`\\ x1 $\shortrightarrow$ (\char`\\ x2 $\shortrightarrow$ case (x1, x2) of {
+
+  (n, Nil) -> Nil
+
+  (n, (Cons x xs)) -> Cons (n * x) (timesList n xs) \\
+  }) in timesList 3 (Cons 5 (Cons 2 Nil))  
+
+  Rule 4: Transform case-expressions to match-expressions \\
+  let timesList = \char`\\ x1 $\shortrightarrow$ (\char`\\ x2 $\shortrightarrow$
+
+  match (n, Nil) (x1, x2) Nil
+
+  (match (n, (Cons x xs)) (x1, x2) (Cons (n * x) (timesList n xs)) bot) \\
+  ) in timesList 3 (Cons 5 (Cons 2 Nil))  
+
+  Rule 9: Transform match for non-empty tuples \\
+  let timesList = \char`\\ x1 $\shortrightarrow$ (\char`\\ x2 $\shortrightarrow$
+
+  match n (sel_{n,1} (x1, x2))
+
+  (match Nil (sel_{n,2} (x1, x2)) Nil (
+
+  match n (sel_{n,1} (x1, x2)) (match (Cons x xs) (sel_{n,2} (x1,x2)) (Cons (n * x) (timesList n xs)) bot) bot)
+
+)
+
+(match n (sel_{n,1} (x1, x2)) (match (Cons x xs) (sel_{n,2} (x1,x2)) (Cons (n * x) (timesList n xs)) bot) bot) \\
+  ) in timesList 3 (Cons 5 (Cons 2 Nil))
+
+  Rule 5: Transform match for variables \\
+  let timesList = \char`\\ x1 $\shortrightarrow$ (\char`\\ x2 $\shortrightarrow$
+
+  (\char`\\ n -> match Nil (sel_{n,2} (x1, x2)) Nil (
+
+(\char`\\ n ->  match (Cons x xs) (sel_{n,2} (x1,x2)) (Cons (n * x) (timesList n xs)) bot )   (sel_{n,1} (x1, x2))
+
+)) (x1, x2) \\
+  ) in timesList 3 (Cons 5 (Cons 2 Nil))
+
+  Rule 7: Transform match for constructors: \\
+  let timesList = \char`\\ x1 $\shortrightarrow$ (\char`\\ x2 $\shortrightarrow$
+
+  (\char`\\ n -> if (isa_{Nil} (sel_{n,2} (x1, x2))) then Nil (
+
+(\char`\\ n ->  match (Cons x xs) (sel_{n,2} (x1,x2)) (Cons (n * x) (timesList n xs)) bot )   (sel_{n,1} (x1, x2))
+
+)) (x1, x2) \\
+  ) in timesList 3 (Cons 5 (Cons 2 Nil))
+
