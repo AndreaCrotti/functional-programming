@@ -1,29 +1,33 @@
-Different strategies of evaluation
+FUNCTIONAL PROGRAMMING
+
+* Exam study
+  - [ ] sheet1
+  - [ ] sheet2
+  - [ ] sheet3
+  - 
 
 * Innermost
   call by value
 
 * Outermost
   call by name
-
 ** Pros
    Only evaluate subexpressions needed for overall result
 
 ** Cons
    Sometimes you have to evaluate more than once some of the expressions
 
-
-Haskell uses the so called *lazy evaluation*
-
-Basically outermost evaluation, but keeping memory of *different evaluations*, keeping tracks of duplicates and evaluates them all in parallel.
-
-An example where outermost is better could be
-
+   Haskell uses the so called *lazy evaluation*
+   
+   Basically outermost evaluation, but keeping memory of *different evaluations*, keeping tracks of duplicates and evaluates them all in parallel.
+   
+   An example where outermost is better could be
+   
 #+BEGIN_SRC haskell
-three :: Int -> Int
-three x = 3
-costly :: Int -> Int
-costly x = longcomputation
+   three :: Int -> Int
+   three x = 3
+   costly :: Int -> Int
+   costly x = longcomputation
 #+END_SRC
 
 and here *three (costly x)* with innermost would take a very long time but the result is always 3.
@@ -265,3 +269,34 @@ The order does matter, the first matching expression will be executed
 
 * Lambda calculus and haskell
   Haskell sometimes doesn't need to get the normal form, when reaching a \lambda expression we stop.
+
+* Implementing haskell (def 3.3.6)
+  For a complex haskell program with the constructors Con, let \delta be the correspondign \delta-rule.
+  Let P the sequence of pattern and function declarations, let _exp_ be a complex haskell-expression where all free variables are predefined or defined in P.
+  _Evaluation_ of _exp_ in program P is done by WHNO-reduction with the above \delta-rules + \beta-reduction.
+
+* Theorem 3.3.7 (Correctness of implementation)
+  Our interpreter realizes undefinedness by non-termination (also if functions are not completely defined).
+  f 1 would not terminate, our interpreter terminates if the value of our expression is not completely undefined.
+  
+
+* Confluent relation
+
+* Lambda calculus
+
+** \alpha reduction
+
+** \beta reduction
+
+** \delta reduction
+   [[http://delta.reduction.word.sytes.org/][delta reduction]]
+   This kind of reduction is not present in *pure* lambda calculus.
+   A set \delta of rules of the form
+   ct1...tn → r with c \in C,t1,...,tn, r \in \gamma is called a 
+   delta-rule set if
+   (1) t1, . . . , tn, r are closed lambda terms
+   (2) all ti are in \beta-normal form
+   (3) the ti do not contain any left-hand side of a rule from \delta
+   (4) in \delta the r exist no two rules c t1...tn → randct1...tm → r′ with m >= n.
+   
+   
