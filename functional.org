@@ -1,11 +1,119 @@
 FUNCTIONAL PROGRAMMING
 
 * Exam study
-  - [ ] sheet1
-  - [ ] sheet2
-  - [ ] sheet3
-  - 
+** Questions
+   - why folie 9.c is not computable?
+   - ex 6.2.b why they aren't binary operators?
+   - check correlation between computability and monotonicity
+   - ex 6.4.c why is the function monotonic?
+   - definition of flat domain (from ex 7.2.3)
+   - check passage in 7.2.b
+   - what's the /otherwise/ for in ex 7.3.b
+   - why the higher order function f_inf does not diverge in 7.3?
+   - what means applying n times the function on \bot (7.3)?
+   - how can I count simply the number of elements in a tree only given the number of \bot (8.1)?
+   - Why defining recursively the elements in 8.1.d?
 
+** Tricky parts
+*** Sheet 1
+    - Always remember to write also the base case in recursive definitions
+      
+*** Sheet2
+    - 1.a
+      type([] : []) = \[[a]\] because the second [] could be a list of lists
+    - 1.d
+      ([], [], :) a tuple can contain anything is not type sensitive like lists
+    - 1.i
+      We need to unify first the second part and then the first part, finally we get the result.
+    - 1.j
+      \x y -> [z, y] where z = \x -> x*x
+      Not a valid haskell expression since they *can't* contain *where*.
+
+*** Sheet3
+    - 2
+      see mapTree and foldTree implementation for good examples of recursion
+      
+*** Sheet4
+    - 3
+      Remember how to write corecursive definitions of functions, for example
+#+begin_src haskell
+f :: [[Int]] -> [[Int]]
+f x = [map (^2) y | y <- x]
+
+g :: [[Int]]
+g = [2,3] : f g
+#+end_src
+
+*** Sheet5
+    - 1.c
+      Even better, "print $ replicate n '*'$ and then use intersperse or lists
+
+    - 2
+      Prove monad laws:
+      Take every possible value of p and apply the rules given in the monad to prove correct.
+      When you find the equality you've proved the law.
+      For more complicated cases make sure that x does not occur in q, for example:
+
+#+begin_src haskell
+(\x -> q) v >>= \y -> r --becomes..
+q[x/v] >>= \y -> r -- where now x does not occur in r
+#+end_src
+
+    - 3.c
+      see [[file:official/solution5.hs][official solution]] for a better way to do it
+      Strings should only be in *show*, not fixed in any other place.
+
+*** Sheet6
+    - 1.
+      Element at the same level of definedness are not comparable, arrows go from the most defined to the least defined.
+      To compute the number of elements of f \x -> y we need to give *all* the possible couple of the relations.
+      For example set $B_\bot \rightarrow B^3_\bot$ has $|B_\bot^3|^{|B_\bot|}$ elements.
+    
+    - 2.
+      Find monotonic extensions simply mean to define the function in the case of \bot, in such a way that it's still monotonic.
+      A function is strict if at least one undefined symbol in input always give undefined in output.
+
+    - 3.
+      $strict \rightarrow monotonic$ but not viceversa
+      To prove strictness is enough to show that whenever we have a \bot in input we produce a \bot in output. \\
+      1 <= 1 always holds (for example).
+
+    - 4.
+      To show that a chain has a LUB
+      + find it
+      + prove that is an Upper Bound
+      + prove that is <= of all the possible Upper Bounds
+      
+      A /reflexive partial order/ is a /complete partial order/ if
+      - /D/ has the smallest element \bot_D = \emptyset
+      - every chain /S/ over /D/ has a lub \bigsqcup S \in D
+
+      A function is continuous whenever: \\
+      $f(\bigsqcup M') = \bigsqcup f(M')$
+
+*** Sheet7
+    - 1.
+      A simple symbol manipulation, make sure you write formally correctly.
+      $(g \circ f)(\bigsqcup S) ... \rightarrow \bigsqcup(g \circ f)(S)$
+    - 2.
+      First prove monotonicity, then use that to prove also that is continuous.
+      To prove monotonicity try every possible case and use premises when needed, for example
+      + $x + \bot = \bot$
+      + partial order defined on the initial function g1, g2 and so on
+
+      Since we already have that it's monotonic, we know that if it's $\sqsubseteq$ it also must be equal.
+      So we just need to show that monotonicity holds when applying to the /x/.
+
+      Then again divide in the 3 possible cases of the /x/ and show the property for all of them.
+    - 3.
+      
+
+*** Sheet8
+    - 1.
+      Make sure you also include the $\bot$ and $A \bot$ elements in the graph, they're also part of the domain.
+      Always include all the possibilities given.
+    
+    
 * Innermost
   call by value
 
@@ -205,19 +313,13 @@ The order does matter, the first matching expression will be executed
 * Simple haskell
 ** Some restrictions
    1. Only one declaration /var = exp/
-
    2. No predefined lists
-
    3. Only allow application of expressions in form /expr1 expr2/
-
    4. No case construct (no pattern matching)
-
    5. Lambda expressions only with variables instead of arbitrary patterns
-
    6. No /where/, only /let/
-
    A simple haskell program is a program without type synomyms and no type classes and no predefined lists.
-
+   
 ** Free variable
    - free(_var_) = { _var_ }
    - free(_constr_) = free(_integer_)
@@ -232,43 +334,50 @@ The order does matter, the first matching expression will be executed
     append Nil z = z
     append (Cons x y) z = Cons x (append y z)
 #+end_src
+    After the iteration of all the rules it will be a simple haskell program.
 
-    
-**** 1. Transform several flat declarations in 1 pattern declaration.
-     var pat1...patn = exp1; ... ; var pat1...patn = exp^k
-     
-**** 2. Transform lambda expressions with serveral patterns
-     \pat1 ... patn -> exp
-     \pat1 -> (\pat2 -> (\patn -> exp))
-     
+**** 1. function to pattern declaration
+     Functions defined with pattern matching will go into 1 case matching function.
 
-**** 3. Lambda expressions with non-variable patterns
-     \pat -> exp
-     \var -> case var of palth -> exp
-     
-**** 4. Translation of case to match (for eliminating case expressions)
+**** 2. lambda with several patterns
+     \pat_1... pat_n -> ... will go to \pat_1 -> (\pat_2 ...
+
+**** 3. lambda patterns into case
+     Using pattern matching inside lambda patterns is not possible, introduce a new variable and rewrite it with a case.
+
+**** 4. /case/ into /match/
+     a case becomes an innested conditional branch of /match/.
      case exp of {path1 -> exp1;
                  patn -> exp2}
 
-**** 9. match for non empty tuples
-     match (pat1, ... ,patn) exp exp1 exp2
-     if this works 
+**** 5. match of variables
+     Matching can be translated to lambda
 
-**** 6. match for the joker pattern (_).
+**** 6. match of joker pattern
+      When first element is an expression you just take the expression1.
      match _ exp exp1 exp2
      _____________________
            exp1
 
-**** 7. match for constructors
+**** 7. match of constructors
+     Use instead *isa_constr* predefined function.
      match (constr pat1 patn) exp exp1 exp2
      _____________________________________
              if (isa constr exp)
 	         then match (pat1, patn)
                  else exp2
-		 
 
-* Lambda calculus and haskell
-  Haskell sometimes doesn't need to get the normal form, when reaching a \lambda expression we stop.
+**** 8. match of empty tuples
+     Use *isa_0-tuple* instead
+
+**** 9. match of non-empty tuple
+     match (pat1, ... ,patn) exp exp1 exp2
+
+**** 10. separation of declarations
+
+**** 11. sequences of declarations into a single declaration
+
+**** 12. declaration of several variables
 
 * Implementing haskell (def 3.3.6)
   For a complex haskell program with the constructors Con, let \delta be the correspondign \delta-rule.
@@ -278,11 +387,11 @@ The order does matter, the first matching expression will be executed
 * Theorem 3.3.7 (Correctness of implementation)
   Our interpreter realizes undefinedness by non-termination (also if functions are not completely defined).
   f 1 would not terminate, our interpreter terminates if the value of our expression is not completely undefined.
-  
 
 * Confluent relation
 
 * Lambda calculus
+  See [[http://ellemose.dina.kvl.dk/~sestoft/lamreduce/lamframes.html][lambda term reducer online]] and also [[http://lci.sourceforge.net/doc/lcidoc010.html][lci]]
 
 ** \alpha reduction
 
@@ -299,4 +408,11 @@ The order does matter, the first matching expression will be executed
    (3) the ti do not contain any left-hand side of a rule from \delta
    (4) in \delta the r exist no two rules c t1...tn → randct1...tm → r′ with m >= n.
    
+   
+
+* Type inference algorithm (Milner 1978)
+  For every type assumption A and every t \in \Lambda, W(A,t) is a pair (\theta, \tau) with a substitution \theta and a type \tau or the algorithm fails (because it's not unifiable).
+  If W(A,t) succeeds, then we say that t is well-type under the type assumption A.
+
+** Rules for W
    
