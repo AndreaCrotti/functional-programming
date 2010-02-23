@@ -10,9 +10,11 @@ FUNCTIONAL PROGRAMMING
    - check passage in 7.2.b
    - what's the /otherwise/ for in ex 7.3.b
    - why the higher order function f_inf does not diverge in 7.3?
-   - what means applying n times the function on \bot (7.3)?
-   - how can I count simply the number of elements in a tree only given the number of \bot (8.1)?
+   - what means applying n times the function on $\bot$ (7.3)?
+   - how can I count simply the number of elements in a tree only given the number of $\bot$ (8.1)?
    - Why defining recursively the elements in 8.1.d?
+   - see better how to do exercise 8.2
+   - why in folie 17(b) it says "up to rule 10" 
 
 ** Tricky parts
 *** Sheet 1
@@ -26,7 +28,7 @@ FUNCTIONAL PROGRAMMING
     - 1.i
       We need to unify first the second part and then the first part, finally we get the result.
     - 1.j
-      \x y -> [z, y] where z = \x -> x*x
+      $\\x y \rightarrow [z, y] where z = \\x \rightarrow x*x$
       Not a valid haskell expression since they *can't* contain *where*.
 
 *** Sheet3
@@ -66,16 +68,16 @@ q[x/v] >>= \y -> r -- where now x does not occur in r
 *** Sheet6
     - 1.
       Element at the same level of definedness are not comparable, arrows go from the most defined to the least defined.
-      To compute the number of elements of f \x -> y we need to give *all* the possible couple of the relations.
+      To compute the number of elements of $f \\x \rightarrow y$ we need to give *all* the possible couple of the relations.
       For example set $B_\bot \rightarrow B^3_\bot$ has $|B_\bot^3|^{|B_\bot|}$ elements.
     
     - 2.
-      Find monotonic extensions simply mean to define the function in the case of \bot, in such a way that it's still monotonic.
+      Find monotonic extensions simply mean to define the function in the case of $\bot$, in such a way that it's still monotonic.
       A function is strict if at least one undefined symbol in input always give undefined in output.
 
     - 3.
       $strict \rightarrow monotonic$ but not viceversa
-      To prove strictness is enough to show that whenever we have a \bot in input we produce a \bot in output. \\
+      To prove strictness is enough to show that whenever we have a $\bot$ in input we produce a $\bot$ in output. \\
       1 <= 1 always holds (for example).
 
     - 4.
@@ -85,8 +87,8 @@ q[x/v] >>= \y -> r -- where now x does not occur in r
       + prove that is <= of all the possible Upper Bounds
       
       A /reflexive partial order/ is a /complete partial order/ if
-      - /D/ has the smallest element \bot_D = \emptyset
-      - every chain /S/ over /D/ has a lub \bigsqcup S \in D
+      - /D/ has the smallest element $\bot_D = \emptyset$
+      - every chain /S/ over /D/ has a lub $\bigsqcup S \in D$
 
       A function is continuous whenever: \\
       $f(\bigsqcup M') = \bigsqcup f(M')$
@@ -113,7 +115,17 @@ q[x/v] >>= \y -> r -- where now x does not occur in r
       Make sure you also include the $\bot$ and $A \bot$ elements in the graph, they're also part of the domain.
       Always include all the possibilities given.
     
-    
+
+* Type inference algorithm /W/
+  Given an haskell program we can then use the following process:
+  $haskell \rightarrow simple haskell \rightarrow lambda calculus \rightarrow type inference$
+  So every haskell program can by typed with the type inference algorithm.
+  We have some initial type assumptions and predefined functions, then we get a type inference algorithm that makes substitutions until the new type is found.
+
+** Algorithm
+   /W(a,t)/ is either a pair (\theta, \tau) or the computation fails because of a failing unification problem.
+   
+
 * Innermost
   call by value
 
@@ -207,8 +219,8 @@ The order does matter, the first matching expression will be executed
 #+END_SRC
   
 ** Operators Infix declarations
-   2 + 3 \rightarrow infix symbol
-   (+) \rightarrow prefix symbol
+   $2 + 3 \rightarrow$ infix symbol
+   $(+) \rightarrow$ prefix symbol
    
    Fixity can be shifted between prefix/infix.
 
@@ -218,14 +230,15 @@ The order does matter, the first matching expression will be executed
    *infix*, associates neither to left or right
    45 `divide` 5 `divide` 3 gives error in this case
    
-   - *:* associates to the right, 3:4:[] \rightarrow 3:(4:[])
+   - *:* associates to the right, $3:4:[] \rightarrow 3:(4:[])$
 
    - function application associates to the left (square square 3)
 
 ** Priority
    We can define a number of priority in infix priority (between 0 and 9 (which is default)).
-   *infixl 9 %%*
-   *infixl 8 @@*
+# check that this doesn't make latex crazy
+   - infixl 9 %%
+   - infixl 8 @@
 
 * Expressions
   First haskell checks the type and IF is well typed than the expression is evaluated.
@@ -299,7 +312,6 @@ The order does matter, the first matching expression will be executed
 
    
 
-
 * Theory
 ** Monotonic function
    
@@ -319,11 +331,21 @@ The order does matter, the first matching expression will be executed
    5. Lambda expressions only with variables instead of arbitrary patterns
    6. No /where/, only /let/
    A simple haskell program is a program without type synomyms and no type classes and no predefined lists.
+
+   A simple haskell expression _exp_ is /transformed/ into _expr_ if we apply all the rules and we reach a fixed point.
+   Application of the rules /terminates/ and the final result is *unique*.
    
 ** Free variable
    - free(_var_) = { _var_ }
    - free(_constr_) = free(_integer_)
    - free(_float_) = free(_char_) = \empty
+
+** Predefined functions
+   - bot :: a
+   - isa_constr :: type -> Bool
+   - argof_constr :: type -> (type_1... type_n)
+   - isa_ntuple :: (a_1...a_n) -> Bool
+   - sel_n,i :: (a_1...a_n) -> a_i
 
 ** 12 Rules to convert complex to simple haskell
 *** Def 2.2.11
