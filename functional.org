@@ -15,6 +15,9 @@ FUNCTIONAL PROGRAMMING
    - Why defining recursively the elements in 8.1.d?
    - see better how to do exercise 8.2
    - why in folie 17(b) it says "up to rule 10" 
+   - what exactly the *in* is for in semantics of HASKELL-programs (folie 14)?
+   - what is "wobei" on folie 15?
+   - why if-then-else is not translated in simple or defined as a function?
 
 ** Tricky parts
 *** Sheet 1
@@ -400,6 +403,10 @@ The order does matter, the first matching expression will be executed
 **** 11. sequences of declarations into a single declaration
 
 **** 12. declaration of several variables
+
+
+* Semantics of HASKELL-programs
+  The semantics of a HASKELL program is given by *Val*, given an initial environment $\omega$ and an environment function $\rho$.
 
 * Implementing haskell (def 3.3.6)
   For a complex haskell program with the constructors Con, let \delta be the correspondign \delta-rule.

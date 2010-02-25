@@ -86,7 +86,7 @@ SHEET3
    instance Interpretable Tropical
 #+END_SRC
 
-
+   
 * Exercise 2
 
 ** (a)
