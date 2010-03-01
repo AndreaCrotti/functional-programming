@@ -6,10 +6,39 @@ regular expression
 """
 # TODO: take a symbolic representation of the rule, transform it into a real regexp and apply it
 # TODO: use http://www.dabeaz.com/ply/ply.html instead
+# TODO: try to rewrite with pyparsing which allows more freedom to define the grammar
 
 import re
 import ply.lex as lex
 import ply.yacc as yacc
+
+import pyparsing as pyp
+# set the correct parseAactions to different things
+
+case = pyp.Literal('case')
+of = pyp.Literal('of')
+lam = pyp.Literal('\\').setParseAction(lambda _ : pass)
+var = pyp.Regex(r"[xyz][0-9]?")
+arr = pyp.Literal("->")
+
+# declaring as a recursive definition, because it can contain other \ expr
+l_expr = Forward()
+l_expr << lam + 
+
+# see this for example
+expr = Forward()
+atom = ( ( e | floatnumber | integer | ident ).setParseAction(pushFirst) | 
+         ( lpar + expr.suppress() + rpar )
+       )
+        
+factor = Forward()
+factor << atom + ZeroOrMore( ( expop + factor ).setParseAction( pushFirst ) )
+        
+term = factor + ZeroOrMore( ( multop + factor ).setParseAction( pushFirst ) )
+expr << term + ZeroOrMore( ( addop + term ).setParseAction( pushFirst ) )
+bnf = Optional((ident + assign).setParseAction(assignVar)) + expr
+
+pattern =  bnf + StringEnd()
 
 tokens = [
     'ID',
@@ -18,6 +47,10 @@ tokens = [
     'LAMBDA',
     'CONSTR',
     'DEF'
+    # 'RCURLY',
+    # 'LCURLY',
+    # 'LROUND',
+    # 'RROUND'
     ]
 
 reserved = {
@@ -36,6 +69,10 @@ t_FUN = r"[a-z]+"
 t_ARROW = r"->"
 t_LAMBDA = r"\\"
 t_DEF = r"="
+# t_LCURLY = r"{"
+# t_RCURLY = r"\}"
+# t_LROUND = r"("
+# t_RROUND = r")"
 
 # use something like this instead to manage also the reserved values
 def t_ID(t):
@@ -65,6 +102,27 @@ while True:
     if not tok: break      # No more input
     print tok
 
+
+class Case(object):
+    def __init__(self, exp, tuples = None):
+        if tuples:
+            self.tuples = tuples
+        else:
+            self.tuples = {}
+
+    def __setitem__(self, i, y):
+        self.tuples[i] = y
+
+class Match(object):
+    def __init__(self, pat1, exp, exp1, rest):
+        # getting in input what can be matched and the rest of the things
+        pass
+
+c = Case("x^2 + 1")
+c["_"] = "100"
+print c.tuples
+            
+# yacc part, here we actually start to create the structure
 
 
 # define all the possible tokens
